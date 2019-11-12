@@ -1,8 +1,20 @@
+@charset "UTF-8";
 body {
   width: 100%;
   height: 100vh;
   margin: 0;
   padding: 0; }
+
+body, textarea, input {
+  font-family: "Source Sans Pro", sans-serif; }
+
+.font_header {
+  color: #222222;
+  font-weight: bold; }
+
+.font_sub-header {
+  margin: 0;
+  color: #898989; }
 
 .page {
   width: 100%;
@@ -10,11 +22,32 @@ body {
   .page_color_y {
     background: #fcdb00; }
   .page_color_w {
-    background: white; }
+    background: #ffffff; }
+  .page__button {
+    color: #222222;
+    border: 2px solid #222222;
+    font-weight: bold;
+    text-align: center; }
+  .page__text-input {
+    border: 2px solid #222222;
+    padding: 0 15px;
+    margin-bottom: 15px; }
   .page-content {
     width: 1200px;
     margin: 0 auto;
     height: 100vh; }
+    .page-content__head {
+      margin: 0 auto;
+      margin-top: 30px;
+      margin-bottom: 30px; }
+    .page-content__header {
+      font-size: 32px;
+      text-align: center;
+      margin-bottom: 20px; }
+    .page-content__sub-header {
+      font-size: 20px;
+      width: 775px;
+      text-align: center; }
     .page-content_position_column {
       display: flex;
       flex-direction: column; }
@@ -35,10 +68,7 @@ body {
     display: flex;
     align-items: center; }
   .first-page-head__logo-text {
-    font-family: "Source Sans Pro", sans-serif;
     font-size: 30px;
-    font-weight: bold;
-    color: #222222;
     margin-left: 10px; }
   .first-page-head__social-conn {
     width: 120px;
@@ -56,15 +86,11 @@ body {
 
 .first-page__header {
   font-size: 48px;
-  font-family: "SourceSansPro", sans-serif;
-  color: #222222;
-  font-weight: bold;
   margin-bottom: 15px;
   text-align: center; }
 
 .first-page__sub-header {
   font-size: 20px;
-  font-family: "SourceSansPro";
   color: #222222;
   width: 460px;
   text-align: center;
@@ -75,11 +101,7 @@ body {
   background-color: #fcdb00;
   width: 252px;
   height: 52px;
-  border: 2px solid #222222;
-  font-size: 22px;
-  font-family: "SourceSansPro", sans-serif;
-  color: #222222;
-  font-weight: bold; }
+  font-size: 22px; }
 
 .first-page__arrow {
   height: 85px;
@@ -87,24 +109,6 @@ body {
   width: max-content; }
 
 /* Features */
-.features-head {
-  margin: 0 auto;
-  margin-top: 50px;
-  margin-bottom: 50px; }
-  .features-head__header {
-    font-size: 32px;
-    font-family: "SourceSansPro", sans-serif;
-    color: #010101;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px; }
-  .features-head__sub-header {
-    font-size: 20px;
-    font-family: "SourceSansPro", sans-serif;
-    color: #898989;
-    width: 775px;
-    text-align: center; }
-
 .features-grid {
   margin-top: auto;
   margin-bottom: auto;
@@ -131,36 +135,12 @@ body {
     width: 200px; }
   .features-grid-feature__header {
     font-size: 22px;
-    font-family: "SourceSansPro", sans-serif;
-    color: #010101;
-    font-weight: bold;
     margin: 0;
     margin-bottom: 10px; }
   .features-grid-feature__sub-header {
     font-size: 16px;
-    font-family: "SourceSansPro", sans-serif;
-    color: #898989;
     width: 220px;
     margin: 0; }
-
-.pricing-head {
-  margin: 0 auto;
-  margin-top: 50px;
-  margin-bottom: 10px; }
-  .pricing-head__header {
-    font-size: 32px;
-    font-family: "SourceSansPro", sans-serif;
-    color: #010101;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px; }
-  .pricing-head__sub-header {
-    font-size: 20px;
-    font-family: "SourceSansPro", sans-serif;
-    color: #898989;
-    width: 775px;
-    text-align: center;
-    margin-bottom: 0; }
 
 .pricing-grid {
   margin: 0 auto;
@@ -177,12 +157,7 @@ body {
     background: white;
     width: 135px;
     height: 45px;
-    border: 2px black solid;
-    font-size: 14px;
-    font-family: "SourceSansPro", sans-serif;
-    color: #010101;
-    font-weight: bold;
-    text-align: center; }
+    font-size: 14px; }
   .pricing-grid-circle {
     display: flex;
     justify-content: center;
@@ -201,7 +176,6 @@ body {
     .pricing-grid-details__header {
       margin: 0;
       font-size: 24px;
-      font-family: "SourceSansPro", sans-serif;
       color: #010101;
       font-weight: bold;
       text-align: center;
@@ -209,7 +183,6 @@ body {
     .pricing-grid-details__sub-header {
       margin: 0;
       font-size: 14px;
-      font-family: "SourceSansPro", sans-serif;
       color: #898989;
       text-align: center; }
   .pricing-grid-price {
@@ -219,16 +192,91 @@ body {
     margin-bottom: 20px; }
     .pricing-grid-price__header {
       font-size: 32px;
-      font-family: "SourceSansPro", sans-serif;
       color: #010101;
       font-weight: bold;
-      text-align: center;
       margin-bottom: 5px; }
     .pricing-grid-price__line {
-      margin-bottom: 7px; }
+      margin-bottom: 7px;
+      height: 2px;
+      width: 40px;
+      background-color: #222222;
+      background: #222222; }
     .pricing-grid-price__sub-header {
       margin-top: 0;
       font-size: 16px;
-      font-family: "SourceSansPro", sans-serif;
       color: #898989;
       text-align: center; }
+
+.contacts {
+  margin: 0 auto;
+  width: 600px;
+  display: flex;
+  flex-direction: column; }
+  .contacts_list {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px; }
+    .contacts_list__contact {
+      width: 33.4%;
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
+    .contacts_list__image {
+      margin-bottom: 15px; }
+    .contacts_list__header {
+      margin: 0;
+      font-size: 24px; }
+    .contacts_list__sub-header {
+      margin: 0;
+      text-align: center;
+      width: 200px;
+      font-size: 14px; }
+  .contacts_form {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 400px; }
+    .contacts_form__email {
+      height: 35px; }
+    .contacts_form__fullname {
+      height: 35px; }
+    .contacts_form__message {
+      height: 140px;
+      padding-top: 10px;
+      font-size: 14px; }
+    .contacts_form__button {
+      margin: 0 auto;
+      height: 40px;
+      width: 130px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      background: #222222 !important;
+      color: #ffffff !important; }
+
+.mark {
+  display: flex;
+  text-align: center; }
+  .mark:before {
+    content: '❝';
+    margin-top: -15px; }
+  .mark:after {
+    content: '❞';
+    align-self: flex-end;
+    margin-bottom: 15px; }
+  .mark:before, .mark:after {
+    font-size: 40px;
+    color: #898989;
+    font-family: "FontAwesome";
+    width: 22px;
+    height: 22px; }
+  .mark__text {
+    height: 80px;
+    display: flex; }
+
+.quote {
+  margin: auto;
+  margin-top: 200px;
+  height: 200px;
+  width: 450px;
+  display: flex;
+  align-items: center; }
