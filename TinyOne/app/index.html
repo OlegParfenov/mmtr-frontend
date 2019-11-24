@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <script src="js/index.js"></script>
     <div class="page page_color_y">
         <div class="page-content page-content_interval_space_between">
                 <div class="first-page-head">
@@ -208,34 +209,75 @@
                 Donec rutrum sed sem quis venenatis.</p></div>
             </div>
             <div class="contacts">
-                    <div class="contacts_list">
-                        <div class="contacts_list__contact">
-                            <img class="contacts_list__image" src="images/adress.png">
-                            <p class="contacts_list__header">Adress</p>
-                            <p class="contacts_list__sub-header font_sub-header">66, Dang Van ngu, Dong Da, Ha noi, Vietnam</p>
+                    <div class="contacts-list">
+                        <div class="contacts-list__contact">
+                            <img class="contacts-list__image" src="images/adress.png">
+                            <p class="contacts-list__header">Adress</p>
+                            <p class="contacts-list__sub-header font_sub-header">66, Dang Van ngu, Dong Da, Ha noi, Vietnam</p>
                         </div>
-                        <div class="contacts_list__contact">
-                            <img class="contacts_list__image" src="images/e-mail.png">
-                            <p class="contacts_list__header">E-mail</p>
-                            <p class="contacts_list__sub-header font_sub-header">contact@halovietnam.com</p>
+                        <div class="contacts-list__contact">
+                            <img class="contacts-list__image" src="images/e-mail.png">
+                            <p class="contacts-list__header">E-mail</p>
+                            <p class="contacts-list__sub-header font_sub-header">contact@halovietnam.com</p>
                         </div>
-                        <div class="contacts_list__contact">
-                            <img class="contacts_list__image" src="images/phone.png">
-                            <p class="contacts_list__header">Phone</p>
-                            <p class="contacts_list__sub-header font_sub-header">+844 1234 56789</p>
+                        <div class="contacts-list__contact">
+                            <img class="contacts-list__image" src="images/phone.png">
+                            <p class="contacts-list__header">Phone</p>
+                            <p class="contacts-list__sub-header font_sub-header">+844 1234 56789</p>
                         </div>
                     </div>
-                    <div class="contacts_form">
-                        <input class="contacts_form__email page__text-input" placeholder="Email" type="text">
-                        <input class="contacts_form__fullname page__text-input" placeholder="Full name" type="text">
-                        <!-- <input class="contacts_form__message page__text-input" placeholder="Message" type="text"> -->
-                        <textarea class="contacts_form__message page__text-input" placeholder="Message" id="" cols="30" rows="10"></textarea>
-                        <button class="contacts_form__button page__button">SEND MESSAGE</button>
+                    <div class="contacts-form">
+                        <!-- <input class="contacts_form__email page__text-input" placeholder="Email" type="text"> -->
+                        <!-- <input class="contacts_form__fullname page__text-input" placeholder="Full name" type="text"> -->
+                        <!-- <textarea class="contacts_form__message page__text-input" placeholder="Message" id="" cols="30" rows="10"></textarea> -->
+                        <!-- <button class="contacts_form__button contacts_form__button_send page__button">SEND MESSAGE</button> -->
+                        <button class="contacts-form__button contacts-form__button_add page__button">+</button>
+                        <div class="popup-window select-field-window">
+                            <div class="popup-window__head">
+                                <p class="popup-window__cross">x</p>
+                            </div>
+                            <p class="popup-window__header font_header">
+                                SELECT FIELD TYPE
+                            </p>
+                            <div class="popup-window__body">
+                                <div class="select-field-window__type-column">
+                                    <button name="select" class="popup-window__button page__button">SELECT</button>
+                                </div>
+                                <div class="select-field-window__type-column">
+                                    <button name="input" class="popup-window__button page__button">INPUT</button>
+                                </div>
+                                <div class="select-field-window__type-column">
+                                    <button name="textarea" class="popup-window__button page__button">TEXTAREA</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup-window create-field-window">
+                            <div class="popup-window__head">
+                                <p class="popup-window__cross">x</p>
+                            </div>
+                            <p class="popup-window__header create-field-window__header font_header">
+                                CREATE FIELD
+                            </p>
+                            <div class="popup-window__body popup-window__body_direction_column">
+                                    <!-- popup-window__body_direction_column -->
+                                <div class="create-field-window__fields">
+                                    <input class="page__text-input create-field-window__input" placeholder="Name" type="text">
+                                    <input class="page__text-input create-field-window__input create-field-window__input_type_number" placeholder="Min" type="number">
+                                    <input class="page__text-input create-field-window__input create-field-window__input_type_number" placeholder="Max" type="number">
+                                    <select class="create-field-window__select page__select" name="" id="">
+                                        <option value="not_necessarily">Not necessarily</option>
+                                        <option value="necessarily">Necessarily</option>
+                                    </select>
+                                </div>
+                                
+                                <button class="popup-window__button page__button">CREATE</button>
+                            </div>
+                            
+                        </div>
+
                     </div>
             </div>
         </div>
-        
-        
     </div>
 
 <div class="quote">

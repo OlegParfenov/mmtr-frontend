@@ -8,6 +8,9 @@ body {
 body, textarea, input {
   font-family: "Source Sans Pro", sans-serif; }
 
+select {
+  width: 100px; }
+
 .font_header {
   color: #222222;
   font-weight: bold; }
@@ -29,6 +32,10 @@ body, textarea, input {
     font-weight: bold;
     text-align: center; }
   .page__text-input {
+    border: 2px solid #222222;
+    padding: 0 15px;
+    margin-bottom: 15px; }
+  .page__select {
     border: 2px solid #222222;
     padding: 0 15px;
     margin-bottom: 15px; }
@@ -212,46 +219,122 @@ body, textarea, input {
   width: 600px;
   display: flex;
   flex-direction: column; }
-  .contacts_list {
+  .contacts-list {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px; }
-    .contacts_list__contact {
+    .contacts-list__contact {
       width: 33.4%;
       display: flex;
       flex-direction: column;
       align-items: center; }
-    .contacts_list__image {
+    .contacts-list__image {
       margin-bottom: 15px; }
-    .contacts_list__header {
+    .contacts-list__header {
       margin: 0;
       font-size: 24px; }
-    .contacts_list__sub-header {
+    .contacts-list__sub-header {
       margin: 0;
       text-align: center;
       width: 200px;
       font-size: 14px; }
-  .contacts_form {
+  .contacts-form {
     margin: auto;
     display: flex;
     flex-direction: column;
     width: 400px; }
-    .contacts_form__email {
-      height: 35px; }
-    .contacts_form__fullname {
-      height: 35px; }
-    .contacts_form__message {
-      height: 140px;
-      padding-top: 10px;
-      font-size: 14px; }
-    .contacts_form__button {
+    .contacts-form__button {
       margin: 0 auto;
-      height: 40px;
-      width: 130px;
-      margin-bottom: 15px;
-      font-size: 12px;
       background: #222222 !important;
-      color: #ffffff !important; }
+      color: #ffffff !important;
+      margin-bottom: 15px; }
+      .contacts-form__button_send {
+        height: 40px;
+        width: 130px;
+        font-size: 12px; }
+      .contacts-form__button_add {
+        height: 40px;
+        width: 40px;
+        font-size: 30px; }
+
+.popup-window {
+  height: 300px;
+  width: 500px;
+  transition: 0.5s;
+  opacity: 1;
+  background: #ffffff;
+  border: 2px solid #222222;
+  position: fixed;
+  top: 25%;
+  left: 31%; }
+  .popup-window__head {
+    height: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 50px; }
+  .popup-window__header {
+    text-align: center;
+    font-size: 40px;
+    margin: 0 auto;
+    margin-bottom: 50px; }
+  .popup-window__cross {
+    font-size: 20px;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-weight: bold; }
+  .popup-window__body {
+    display: flex; }
+    .popup-window__body_direction_column {
+      align-items: center;
+      flex-direction: column; }
+  .popup-window__button {
+    background: #222222 !important;
+    color: #ffffff !important;
+    width: 135px;
+    height: 45px;
+    font-size: 14px; }
+
+.select-field-window {
+  display: none; }
+  .select-field-window__type-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33.4%; }
+
+.create-field-window {
+  display: none; }
+  .create-field-window__input {
+    height: 30px;
+    width: 50px; }
+    .create-field-window__input_type_number {
+      width: 40px !important; }
+  .create-field-window__select {
+    width: 150px; }
+  .create-field-window__fields {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-evenly; }
+  .create-field-window__header {
+    margin-bottom: 20px; }
+
+@keyframes animateleft {
+  from {
+    left: -500px;
+    opacity: 0; }
+  to {
+    left: 31%;
+    opacity: 1; } }
+
+@keyframes animateright {
+  from {
+    left: 31%;
+    opacity: 1; }
+  to {
+    left: 100%;
+    opacity: 0; } }
 
 .mark {
   display: flex;
@@ -280,3 +363,12 @@ body, textarea, input {
   width: 450px;
   display: flex;
   align-items: center; }
+
+.display_block {
+  display: block;
+  animation-name: animateleft;
+  animation-duration: 0.6s; }
+
+.display_none {
+  animation: animateright;
+  animation-duration: 0.6s; }

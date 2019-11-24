@@ -8,6 +8,9 @@ body{
 body,textarea,input  {
   font-family: "Source Sans Pro", sans-serif;
 }
+select{
+  width: 100px;
+}
 
 .font{
   &_header{
@@ -36,6 +39,11 @@ body,textarea,input  {
     text-align: center;
   }
   &__text-input{
+    border: 2px solid rgb(34, 34, 34);
+    padding: 0 15px;
+    margin-bottom: 15px;
+  }
+  &__select{
     border: 2px solid rgb(34, 34, 34);
     padding: 0 15px;
     margin-bottom: 15px;
@@ -195,8 +203,6 @@ body,textarea,input  {
     width: 135px;
     height: 45px;
     font-size: 14px;
-    
-    
   }
   &-circle{
     display: flex;
@@ -268,7 +274,7 @@ body,textarea,input  {
   display: flex;
   flex-direction: column;
 
-  &_list{
+  &-list{
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
@@ -293,33 +299,123 @@ body,textarea,input  {
       font-size: 14px;
     }
   }
-  &_form{
+  &-form{
     margin: auto;
     display: flex;
     flex-direction: column;
     width: 400px;
-
-    &__email{
-      height: 35px;
-    }
-    &__fullname{
-      height: 35px;
-    }
-    &__message{
-      height: 140px;
-      padding-top: 10px;
-      font-size: 14px;
-    }
-    
     &__button{
       margin: 0 auto;
-      height: 40px;
-      width: 130px;
-      margin-bottom: 15px;
-      font-size: 12px;
       background: #222222 !important;
       color: #ffffff !important;
+      margin-bottom: 15px;
+      &_send{
+      height: 40px;
+      width: 130px;
+      font-size: 12px;
+      }
+      &_add{
+        height: 40px;
+        width: 40px;
+        font-size: 30px;
+      }
+  }
+}
+}
+.popup-window{
+  height: 300px;
+  width: 500px;
+  transition: 0.5s;
+  opacity: 1;
+  background: #ffffff;
+  border: 2px solid rgb(34, 34, 34);
+  position: fixed;
+  top: 25%;
+  left: 31%;
+  &__head{
+    height: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 50px;
+  }
+  &__header{
+    text-align: center;
+    font-size: 40px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+  }
+  &__cross{
+    font-size: 20px;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  &__body{
+    display: flex;
+    &_direction_column{
+      align-items: center;
+      flex-direction: column;
     }
+  }
+  &__button{
+    background: #222222 !important;
+    color: #ffffff !important;
+    width: 135px;
+    height: 45px;
+    font-size: 14px;
+  }
+}
+.select-field-window{
+  display: none;
+  &__type-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33.4%;
+  }
+
+}
+.create-field-window{
+  display: none;
+  &__input{
+    height: 30px;
+    width: 50px;
+    &_type_number{
+      width: 40px !important;
+    }
+  }
+  &__select{
+    width: 150px;
+  }
+  &__fields{
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  &__header{
+    margin-bottom: 20px;
+  }
+}
+@keyframes animateleft{
+  from{
+    left: -500px;
+    opacity: 0;
+  }
+  to{
+    left: 31%;
+    opacity: 1;
+  }
+}
+@keyframes animateright{
+  from{
+    left: 31%;
+    opacity: 1;
+  }
+  to{
+    left: 100%;
+    opacity: 0;
   }
 }
 
@@ -354,4 +450,16 @@ body,textarea,input  {
   width: 450px;
   display: flex;
   align-items: center;
+}
+.display{
+  &_block{
+    display: block;
+    animation-name: animateleft;
+    animation-duration: 0.6s;
+  }
+  &_none{
+    animation: animateright;
+    animation-duration: 0.6s;
+    // display: none;
+  }
 }
