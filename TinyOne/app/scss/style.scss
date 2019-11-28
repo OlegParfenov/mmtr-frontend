@@ -5,6 +5,7 @@ body{
   padding: 0;
 }
 
+
 body,textarea,input  {
   font-family: "Source Sans Pro", sans-serif;
 }
@@ -33,20 +34,28 @@ select{
     background: #ffffff;
   }
   &__button{
-    color: rgb(34, 34, 34);
+    color: #222222;
     border: 2px solid rgb(34, 34, 34);
     font-weight: bold;
     text-align: center;
   }
   &__text-input{
     border: 2px solid rgb(34, 34, 34);
-    padding: 0 15px;
+    padding-left: 10px;
     margin-bottom: 15px;
   }
   &__select{
     border: 2px solid rgb(34, 34, 34);
-    padding: 0 15px;
     margin-bottom: 15px;
+  }
+  &__checkbox{
+    margin-bottom: 15px;
+    border: 2px solid rgb(34, 34, 34);
+  }
+  &__warn-label{
+    margin: 0;
+    color: #df4242;
+    font-size: 10px;
   }
 
   &-content{
@@ -304,6 +313,10 @@ select{
     display: flex;
     flex-direction: column;
     width: 400px;
+    &__field{
+      width: 100%;
+      
+    }
     &__button{
       margin: 0 auto;
       background: #222222 !important;
@@ -313,12 +326,32 @@ select{
       height: 40px;
       width: 130px;
       font-size: 12px;
+      display: none;
       }
       &_add{
         height: 40px;
         width: 40px;
         font-size: 30px;
       }
+  }
+  &__required-field-label{
+    margin-bottom: 5px;
+    margin-right: 5px;
+    display: inline-block;
+
+  }
+  &__characters-warning-label{
+    margin-bottom: 5px;
+    display: inline-block;
+  }
+  &__text-input{
+    height: 30px;
+    width: 100%;
+  }
+  &__textarea{
+    height: 90px;
+    width: 100%;
+    padding-top: 10px;
   }
 }
 }
@@ -330,6 +363,7 @@ select{
   background: #ffffff;
   border: 2px solid rgb(34, 34, 34);
   position: fixed;
+  
   top: 25%;
   left: 31%;
   &__head{
@@ -374,19 +408,18 @@ select{
     align-items: center;
     width: 33.4%;
   }
-
 }
 .create-field-window{
   display: none;
   &__input{
     height: 30px;
-    width: 50px;
+    width: 150px;
     &_type_number{
       width: 40px !important;
     }
   }
   &__select{
-    width: 150px;
+    width: 170px;
   }
   &__fields{
     width: 100%;
@@ -455,11 +488,40 @@ select{
   &_block{
     display: block;
     animation-name: animateleft;
-    animation-duration: 0.6s;
+    animation-duration: 0.4s;
   }
   &_none{
     animation: animateright;
-    animation-duration: 0.6s;
+    animation-duration: 0.4s;
     // display: none;
+  }
+}
+
+
+
+.checkbox{
+  margin: auto;
+  margin-bottom: 15px;
+  font-size: 14px;
+  & input[type="checkbox"] {
+    display: none;
+  }
+  & label {
+    display: flex;
+  }
+  & label::before{
+    content: "";
+    height: 16px;
+    width: 16px;
+    border: 2px solid #222222;
+    margin-right: 5px;
+  }
+  & input[type="checkbox"]:checked + label::before {
+    height: 16px;
+    width: 16px;
+    background: #222222;
+    outline:3px solid #ffffff;
+    outline-offset:-5px;
+    content: "";  
   }
 }

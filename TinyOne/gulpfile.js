@@ -23,9 +23,15 @@ gulp.task('code', function() {
     .pipe(browserSync.reload({ stream: true }))
 });
 
+gulp.task('scripts', function() {
+    return gulp.src('app/js/index.js')
+    .pipe(browserSync.reload({ stream: true }))
+});
+
 gulp.task('watch', function(){
     gulp.watch('app/scss/**/*.scss', gulp.parallel('sass'));
     gulp.watch('app/*.html', gulp.parallel('code')); 
+    gulp.watch('app/js/index.js', gulp.parallel('scripts'));
     // Other watchers
   })
 

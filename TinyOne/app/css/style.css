@@ -33,12 +33,18 @@ select {
     text-align: center; }
   .page__text-input {
     border: 2px solid #222222;
-    padding: 0 15px;
+    padding-left: 10px;
     margin-bottom: 15px; }
   .page__select {
     border: 2px solid #222222;
-    padding: 0 15px;
     margin-bottom: 15px; }
+  .page__checkbox {
+    margin-bottom: 15px;
+    border: 2px solid #222222; }
+  .page__warn-label {
+    margin: 0;
+    color: #df4242;
+    font-size: 10px; }
   .page-content {
     width: 1200px;
     margin: 0 auto;
@@ -243,6 +249,8 @@ select {
     display: flex;
     flex-direction: column;
     width: 400px; }
+    .contacts-form__field {
+      width: 100%; }
     .contacts-form__button {
       margin: 0 auto;
       background: #222222 !important;
@@ -251,11 +259,26 @@ select {
       .contacts-form__button_send {
         height: 40px;
         width: 130px;
-        font-size: 12px; }
+        font-size: 12px;
+        display: none; }
       .contacts-form__button_add {
         height: 40px;
         width: 40px;
         font-size: 30px; }
+    .contacts-form__required-field-label {
+      margin-bottom: 5px;
+      margin-right: 5px;
+      display: inline-block; }
+    .contacts-form__characters-warning-label {
+      margin-bottom: 5px;
+      display: inline-block; }
+    .contacts-form__text-input {
+      height: 30px;
+      width: 100%; }
+    .contacts-form__textarea {
+      height: 90px;
+      width: 100%;
+      padding-top: 10px; }
 
 .popup-window {
   height: 300px;
@@ -307,11 +330,11 @@ select {
   display: none; }
   .create-field-window__input {
     height: 30px;
-    width: 50px; }
+    width: 150px; }
     .create-field-window__input_type_number {
       width: 40px !important; }
   .create-field-window__select {
-    width: 150px; }
+    width: 170px; }
   .create-field-window__fields {
     width: 100%;
     margin-bottom: 20px;
@@ -367,8 +390,30 @@ select {
 .display_block {
   display: block;
   animation-name: animateleft;
-  animation-duration: 0.6s; }
+  animation-duration: 0.4s; }
 
 .display_none {
   animation: animateright;
-  animation-duration: 0.6s; }
+  animation-duration: 0.4s; }
+
+.checkbox {
+  margin: auto;
+  margin-bottom: 15px;
+  font-size: 14px; }
+  .checkbox input[type="checkbox"] {
+    display: none; }
+  .checkbox label {
+    display: flex; }
+  .checkbox label::before {
+    content: "";
+    height: 16px;
+    width: 16px;
+    border: 2px solid #222222;
+    margin-right: 5px; }
+  .checkbox input[type="checkbox"]:checked + label::before {
+    height: 16px;
+    width: 16px;
+    background: #222222;
+    outline: 3px solid #ffffff;
+    outline-offset: -5px;
+    content: ""; }
