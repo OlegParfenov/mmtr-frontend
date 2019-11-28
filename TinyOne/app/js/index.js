@@ -7,10 +7,11 @@
         selectWindowButton = document.querySelectorAll('.popup-window__button'),//Кнопка - выбор поля
         createWindow = document.querySelector('.create-field-window'),//Окно создания поля
         createButton = document.querySelector('#createButton'),//Кнопка создания поля
-        contactsForm = document.querySelector('.contacts-form'), // Форма, в которую добавляются поля
+        modalBackground = document.querySelector('.modal'),
         typeField = '',//Тип поля, который выбрал пользователь для создания
         sendFieldsButton = document.querySelector('.contacts-form__button_send'),//Кнопка, отправляющая поля
-        fieldsList = [];
+        fieldsList = [];//Массив с объектами-полями
+
         //Конструктор поля
         function field(type, name, min, max, necessarily){
             this.uuid = uuidv4(); //Генерация идентификатора
@@ -25,20 +26,20 @@
             //Создание контейнера для поля
             fieldContainer = document.createElement('div');
             fieldContainer.classList.add('contacts-form__field')
-
+            //Если создаваемый тип checkbox,то создаётся checkbox
             if (typeField === 'checkbox'){
                 divContainer = document.createElement('div');//Создание контейнера для checkbox
-                divContainer.classList.add('checkbox');
+                divContainer.classList.add('contacts-form__checkbox');
                 newField = document.createElement('input');
                 newField.type = 'checkbox';//Создание checkbox
 
-                // contactsForm.appendChild(divContainer);
                 fieldContainer.appendChild(divContainer);
-                sendFieldsButton.before(fieldContainer);//Добавление поля до кнопки "send"
-                
+                sendFieldsButton.before(fieldContainer);
+                //Добавление поля до кнопки "send"
                 divContainer.appendChild(newField);
                 newField.insertAdjacentHTML('afterend', `<label for="${this.uuid}">${this.name}</label>`);
             }
+            //Иначе создаётся текстовое поле
             else{
                 newField = document.createElement(`${typeField}`);
                 newField.classList.add('page__text-input');
@@ -49,9 +50,9 @@
                 if (!this.min == '') newField.minLength = `${this.min}`;
                 if (!this.max == '' ) newField.maxLength = `${this.max}`;
 
-                // contactsForm.appendChild(newField);
                 fieldContainer.appendChild(newField);
-                sendFieldsButton.before(fieldContainer)//Добавление поля до кнопки "send"
+                //Добавление поля до кнопки "send"
+                sendFieldsButton.before(fieldContainer)
             }
             if (typeField === 'input'){
                 newField.classList.add('contacts-form__text-input');
@@ -59,7 +60,7 @@
             if (typeField === 'textarea'){
                 newField.classList.add('contacts-form__textarea');
             }
-
+            //Вывод предупреждения о том, что поле является обязательным для заполнения
             if (this.necessarily) {
                 newField.insertAdjacentHTML('beforebegin',
                  `<p class="contacts-form__required-field-label page__warn-label">Обязательное поле *
@@ -67,19 +68,20 @@
             }
             newField.id = this.uuid; //Добавляем идентификатор полю
             sendFieldsButton.style.display = 'block';
-
         }
 
         //Кнопка "+" - открывает окно выбора типа поля
-        addButton.addEventListener('click', ()=>{
+        addButton.addEventListener('click', ()=>{ 
+            modalBackground.style.display = 'block';
             showTheWindow(selectWindow);
+
         })
 
         //Обработчик клика на кнопку с типом поля (select, input, textarea)
         selectWindowButton.forEach((button) => {
             button.addEventListener('click', ()=>{
                 closeTheWindow(selectWindow, ()=>{
-                    typeField = button.value;//Записваем тип поля, которое мы выбрали для создания
+                    typeField = button.value +'';//Записваем тип поля, которое мы выбрали для создания
                     if (typeField === 'checkbox'){
                         document.querySelector('#minCountInput').style.display = 'none';
                         document.querySelector('#maxCountInput').style.display = 'none';
@@ -113,18 +115,24 @@
             newField.create();
             
              // Добавление события для валидации min  количества символов
-             minCountUpdateEvent();
-             
+            minCountUpdateEvent();
+            closeModal(300);
             closeTheWindow(createWindow);
+            
         });
         
-
         //Закрытие окна по нажатию на крест
         windowCross.forEach((cross) =>{
             cross.addEventListener('click', ()=>{
                 lastButton = '';
-                closeTheWindow(cross.parentNode.parentNode); //Закрывает окно, в котором находится крест
+                closeModal(300);
+                closeTheWindow(cross.parentNode.parentNode); //Закрывает окно, в котором находится крест   
+                
             })
+        })
+
+        sendFieldsButton.addEventListener('click', ()=>{
+            validationCheck();
         })
 
         function closeTheWindow(window, callback){
@@ -133,10 +141,16 @@
                 window.classList.remove('display_block');
                 callback();
             }, 350)
+            
         }
         function showTheWindow(window){
             window.classList.remove('display_none');
             window.classList.add('display_block');
+        }
+        function closeModal(time){
+            setTimeout(()=>{
+                modalBackground.style.display = 'none';   
+            }, time)
         }
         function uuidv4() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -150,7 +164,7 @@
             fields.forEach((e)=>{
                 e.addEventListener('input', ()=>{
                     if (e.value.length < e.minLength && e.value.length != 0){
-                        e.style.background = '#df4242';
+                        e.style.background = 'rgba(255, 86, 86, 0.651)';
                         //Если у поля уже есть предупреждение о кол-ве символов, то его выводить не нужно
                         if(!e.parentNode.querySelector('.contacts-form__characters-warning-label')){
                             e.insertAdjacentHTML('beforebegin',
@@ -158,28 +172,19 @@
                              Минимальное количество символов: ${e.minLength}
                              </p>`);
                         }
-                        
                     }
                     else{
                         e.style.background = '#ffffff';
                         e.parentNode.querySelector('.contacts-form__characters-warning-label').remove();
-                        // parentContainer = e.parentNode;
-                        // parentContainer.querySelector('.contacts-form__required-field-label')
-                        // .classList.remove('contacts-form__required-field-label');
                     }
                 })
             })
           }
-        //Закрытие по клику на окно
-        // window.onclick = function (e) {
-        //     if (e.target == selectWindow){
-        //         // selectWindow.classList.remove('display_block');
-        //         selectWindow.classList.add('display_none');
-        //         this.setTimeout(()=>{
-        //             selectWindow.classList.remove('display_block');
-        //         }, 550)
-                
-        //     }
-        // }
+
+          function validationCheck(){
+            // fieldsList.forEach((e)=>{
+               
+            // })
+          }
      }, false);
 }());
