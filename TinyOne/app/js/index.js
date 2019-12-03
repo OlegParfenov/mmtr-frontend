@@ -1,19 +1,19 @@
-(function() {
-    document.addEventListener('DOMContentLoaded', function() {
-        let 
-        addButton = document.querySelector('.contacts-form__button_add'), //Открытие окна выбора поля
-        selectWindow = document.querySelector('.select-field-window'), //Окно выбора типа создаваемого поля
-        windowCross = document.querySelectorAll('.popup-window__cross'), //Крест - закрытие окна
-        selectWindowButton = document.querySelectorAll('.popup-window__button'),//Кнопка - выбор поля
-        createWindow = document.querySelector('.create-field-window'),//Окно создания поля
-        createButton = document.querySelector('#createButton'),//Кнопка создания поля
-        modalBackground = document.querySelector('.modal'),
-        typeField = '',//Тип поля, который выбрал пользователь для создания
-        sendFieldsButton = document.querySelector('.contacts-form__button_send'),//Кнопка, отправляющая поля
-        fieldsList = [];//Массив с объектами-полями
+(function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        let
+            addButton = document.querySelector('.contacts-form__button_add'), //Открытие окна выбора поля
+            selectWindow = document.querySelector('.select-field-window'), //Окно выбора типа создаваемого поля
+            windowCross = document.querySelectorAll('.popup-window__cross'), //Крест - закрытие окна
+            selectWindowButton = document.querySelectorAll('.popup-window__button'),//Кнопка - выбор поля
+            createWindow = document.querySelector('.create-field-window'),//Окно создания поля
+            createButton = document.querySelector('#createButton'),//Кнопка создания поля
+            modalBackground = document.querySelector('.modal'),
+            typeField = '',//Тип поля, который выбрал пользователь для создания
+            sendFieldsButton = document.querySelector('.contacts-form__button_send'),//Кнопка, отправляющая поля
+            fieldsList = [];//Массив с объектами-полями
 
         //Конструктор поля
-        function field(type, name, min, max, necessarily){
+        function field(type, name, min, max, necessarily) {
             this.uuid = uuidv4(); //Генерация идентификатора
             this.type = type;
             this.name = name;
@@ -22,12 +22,12 @@
             this.necessarily = necessarily;
         }
         //Функция создания поля
-        field.prototype.create = function(){
+        field.prototype.create = function () {
             //Создание контейнера для поля
             fieldContainer = document.createElement('div');
             fieldContainer.classList.add('contacts-form__field')
             //Если создаваемый тип checkbox,то создаётся checkbox
-            if (typeField === 'checkbox'){
+            if (typeField === 'checkbox') {
                 divContainer = document.createElement('div');//Создание контейнера для checkbox
                 divContainer.classList.add('contacts-form__checkbox');
                 newField = document.createElement('input');
@@ -40,7 +40,7 @@
                 newField.insertAdjacentHTML('afterend', `<label for="${this.uuid}">${this.name}</label>`);
             }
             //Иначе создаётся текстовое поле
-            else{
+            else {
                 newField = document.createElement(`${typeField}`);
                 newField.classList.add('page__text-input');
                 newField.placeholder = `${this.name}`;
@@ -48,143 +48,172 @@
                 //Проверки установления минимального и максимального количества символов в полях
                 //Если передали пустые значения, значит ставить min и max количество символов не нужно
                 if (!this.min == '') newField.minLength = `${this.min}`;
-                if (!this.max == '' ) newField.maxLength = `${this.max}`;
+                if (!this.max == '') newField.maxLength = `${this.max}`;
 
                 fieldContainer.appendChild(newField);
                 //Добавление поля до кнопки "send"
                 sendFieldsButton.before(fieldContainer)
             }
-            if (typeField === 'input'){
+            if (typeField === 'input') {
                 newField.classList.add('contacts-form__text-input');
             }
-            if (typeField === 'textarea'){
+            if (typeField === 'textarea') {
                 newField.classList.add('contacts-form__textarea');
             }
             //Вывод предупреждения о том, что поле является обязательным для заполнения
             if (this.necessarily) {
+                newField.classList.add('necessarily');
                 newField.insertAdjacentHTML('beforebegin',
-                 `<p class="contacts-form__required-field-label page__warn-label">Обязательное поле *
+                    `<p class="contacts-form__required-field-label page__warn-label">Обязательное поле *
                  </p>`);
             }
+            newField.classList.add('page__field');
             newField.id = this.uuid; //Добавляем идентификатор полю
+            setDeleteEvent(newField);
             sendFieldsButton.style.display = 'block';
         }
 
         //Кнопка "+" - открывает окно выбора типа поля
-        addButton.addEventListener('click', ()=>{ 
+        addButton.addEventListener('click', () => {
             modalBackground.style.display = 'block';
             showTheWindow(selectWindow);
-
         })
 
         //Обработчик клика на кнопку с типом поля (select, input, textarea)
         selectWindowButton.forEach((button) => {
-            button.addEventListener('click', ()=>{
-                closeTheWindow(selectWindow, ()=>{
-                    typeField = button.value +'';//Записваем тип поля, которое мы выбрали для создания
-                    if (typeField === 'checkbox'){
+            button.addEventListener('click', () => {
+                closeTheWindow(selectWindow, () => {
+                    typeField = button.value + '';//Записваем тип поля, которое мы выбрали для создания
+                    if (typeField === 'checkbox') {
                         document.querySelector('#minCountInput').style.display = 'none';
                         document.querySelector('#maxCountInput').style.display = 'none';
-                    } 
-                    else{
-                        document.querySelector('#minCountInput').style.display = 'block';
-                        document.querySelector('#maxCountInput').style.display = 'block';  
                     }
-                    showTheWindow(createWindow);     
+                    else {
+                        document.querySelector('#minCountInput').style.display = 'block';
+                        document.querySelector('#maxCountInput').style.display = 'block';
+                    }
+                    showTheWindow(createWindow);
                 });
-                
             })
         })
-        
-        createButton.addEventListener('click', ()=>{
+        createButton.addEventListener('click', () => {
             var name = document.querySelector('#nameInput').value;
             var minCount = document.querySelector('#minCountInput').value;
             var maxCount = document.querySelector('#maxCountInput').value;
             var necessarily = false;
-            if (document.querySelector('#selectNecessarily').value == 'necessarily'){
+            if (document.querySelector('#selectNecessarily').value == 'necessarily') {
                 necessarily = true;
             }
-
             //Количество символов не может быть отрицательным
-            if (minCount <= 0 ) minCount = '';
-            if (maxCount <= 0 ) maxCount = '';
+            if (minCount <= 0) minCount = '';
+            if (maxCount <= 0) maxCount = '';
 
             let newField = new field(typeField, name, minCount, maxCount, necessarily);
 
             fieldsList.push(newField);//Добавление объекта в массив с объектами
             newField.create();
-            
-             // Добавление события для валидации min  количества символов
+
+            // Добавление события для валидации min  количества символов
             minCountUpdateEvent();
             closeModal(300);
             closeTheWindow(createWindow);
-            
+
         });
-        
+
         //Закрытие окна по нажатию на крест
-        windowCross.forEach((cross) =>{
-            cross.addEventListener('click', ()=>{
+        windowCross.forEach((cross) => {
+            cross.addEventListener('click', () => {
                 lastButton = '';
                 closeModal(300);
                 closeTheWindow(cross.parentNode.parentNode); //Закрывает окно, в котором находится крест   
-                
+
             })
         })
 
-        sendFieldsButton.addEventListener('click', ()=>{
-            validationCheck();
+        sendFieldsButton.addEventListener('click', () => {
+            if (validationCheck()) alert('Ок')
+            else alert('Не ок')
         })
 
-        function closeTheWindow(window, callback){
+        function closeTheWindow(window, callback) {
             window.classList.add('display_none');
-            setTimeout(()=>{
+            setTimeout(() => {
                 window.classList.remove('display_block');
                 callback();
             }, 350)
-            
+
         }
-        function showTheWindow(window){
+        function showTheWindow(window) {
             window.classList.remove('display_none');
             window.classList.add('display_block');
         }
-        function closeModal(time){
-            setTimeout(()=>{
-                modalBackground.style.display = 'none';   
+        function closeModal(time) {
+            setTimeout(() => {
+                modalBackground.style.display = 'none';
             }, time)
         }
         function uuidv4() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-              var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-              return v.toString(16);
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
             });
-          }
+        }
 
-          function minCountUpdateEvent(){
+        function minCountUpdateEvent() {
             var fields = document.querySelectorAll('.page__text-input')
-            fields.forEach((e)=>{
-                e.addEventListener('input', ()=>{
-                    if (e.value.length < e.minLength && e.value.length != 0){
+            fields.forEach((e) => {
+                e.addEventListener('input', () => {
+                    if (e.value.length < e.minLength && e.value.length != 0) {
                         e.style.background = 'rgba(255, 86, 86, 0.651)';
                         //Если у поля уже есть предупреждение о кол-ве символов, то его выводить не нужно
-                        if(!e.parentNode.querySelector('.contacts-form__characters-warning-label')){
+                        if (!e.parentNode.querySelector('.contacts-form__characters-warning-label')) {
                             e.insertAdjacentHTML('beforebegin',
-                            `<p class="contacts-form__characters-warning-label page__warn-label">
+                                `<p class="contacts-form__characters-warning-label page__warn-label">
                              Минимальное количество символов: ${e.minLength}
                              </p>`);
                         }
                     }
-                    else{
+                    else {
                         e.style.background = '#ffffff';
                         e.parentNode.querySelector('.contacts-form__characters-warning-label').remove();
                     }
                 })
             })
-          }
+        }
 
-          function validationCheck(){
-            // fieldsList.forEach((e)=>{
-               
-            // })
-          }
-     }, false);
+        function validationCheck() {
+            var fields = document.querySelectorAll('.page__field');
+            var check = true;
+            fields.forEach((e) => {
+                if (!necessarilyCheck(e)) {
+                    check = false;
+                }
+            })
+            if (check) return true
+            else return false
+        }
+
+        function necessarilyCheck(field) {
+            switch (field.type) {
+                case 'checkbox':
+                    if (field.classList.contains('necessarily') && !field.checked) {
+                        return false
+                    }
+                    break;
+                default:
+                    if (field.classList.contains('necessarily') && (field.value.length < field.minLength || !field.value)) {
+                        return false
+                    }
+                    break;
+            }
+            return true
+        }
+
+        function setDeleteEvent(field){
+            field.addEventListener('mousedown', ()=>{
+                // alert('1')
+                field.parentNode.removeChild(field);
+            })
+        }
+    }, false);
 }());
