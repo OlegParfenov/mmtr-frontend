@@ -33,11 +33,14 @@
                 newField = document.createElement('input');
                 newField.type = 'checkbox';//Создание checkbox
 
+
                 fieldContainer.appendChild(divContainer);
                 sendFieldsButton.before(fieldContainer);
                 //Добавление поля до кнопки "send"
                 divContainer.appendChild(newField);
                 newField.insertAdjacentHTML('afterend', `<label for="${this.uuid}">${this.name}</label>`);
+
+                setDeleteEvent(newField.parentNode);//Добавление обработчика удаления
             }
             //Иначе создаётся текстовое поле
             else {
@@ -51,8 +54,8 @@
                 if (!this.max == '') newField.maxLength = `${this.max}`;
 
                 fieldContainer.appendChild(newField);
-                //Добавление поля до кнопки "send"
-                sendFieldsButton.before(fieldContainer)
+                sendFieldsButton.before(fieldContainer)//Добавление поля до кнопки "send"
+                setDeleteEvent(newField); //Добавление обработчика удаления
             }
             if (typeField === 'input') {
                 newField.classList.add('contacts-form__text-input');
@@ -69,7 +72,6 @@
             }
             newField.classList.add('page__field');
             newField.id = this.uuid; //Добавляем идентификатор полю
-            setDeleteEvent(newField);
             sendFieldsButton.style.display = 'block';
         }
 
@@ -209,11 +211,41 @@
             return true
         }
 
-        function setDeleteEvent(field){
-            field.addEventListener('mousedown', ()=>{
-                // alert('1')
-                field.parentNode.removeChild(field);
+        function setDeleteEvent(field) {
+            field.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                var coords = getCoords(field);
+                
+                showMenu(coords.left, coords.top, coords.width, coords.height)
+
+                // var parentField = field.parentNode;
+                // parentField.parentNode.removeChild(parentField);
+
             })
+        }
+        function getCoords(elem) { // кроме IE8-
+            var box = elem.getBoundingClientRect();
+            return {
+              top: box.top + pageYOffset,
+              left: box.left + pageXOffset,
+              width: box.width,
+              height: box.height
+            };
+          }
+          function showMenu(x, y, elemWidth, elemHeight) {
+            var menu = document.querySelector('.menu');
+            menu.style.left = x + elemWidth + 'px';
+            menu.style.top = y + elemHeight + 'px';
+            menu.classList.add('show-menu');
         }
     }, false);
 }());
+
+
+
+
+
+
+function hideMenu() {
+    menu.classList.remove('show-menu');
+}

@@ -439,3 +439,12 @@ select {
   background-color: rgba(0, 0, 0, 0.4);
   /* Black w/ opacity */
   transition: 0.2s; }
+
+.menu {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  display: flex; }
+
+.showMenu {
+  display: block !important; }
