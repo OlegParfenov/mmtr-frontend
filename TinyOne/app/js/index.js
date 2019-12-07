@@ -9,8 +9,10 @@
             createButton = document.querySelector('#createButton'),//Кнопка создания поля
             modalBackground = document.querySelector('.modal'),
             typeField = '',//Тип поля, который выбрал пользователь для создания
-            sendFieldsButton = document.querySelector('.contacts-form__button_send'),//Кнопка, отправляющая поля
-            fieldsList = [];//Массив с объектами-полями
+            sendFieldsButton = document.querySelector('.contacts-form__button_send'),//Кнопка, отправляющая 
+            contactsForm = document.querySelector('.contacts-form'),//Форма содержащая контакты и поля для заполнения
+            menu = document.querySelector('.menu'),
+            pressedField;
 
         //Конструктор поля
         function field(type, name, min, max, necessarily) {
@@ -72,7 +74,8 @@
             }
             newField.classList.add('page__field');
             newField.id = this.uuid; //Добавляем идентификатор полю
-            sendFieldsButton.style.display = 'block';
+            sendBtnShow();
+            // sendFieldsButton.style.display = 'block';
         }
 
         //Кнопка "+" - открывает окно выбора типа поля
@@ -112,7 +115,6 @@
 
             let newField = new field(typeField, name, minCount, maxCount, necessarily);
 
-            fieldsList.push(newField);//Добавление объекта в массив с объектами
             newField.create();
 
             // Добавление события для валидации min  количества символов
@@ -214,29 +216,52 @@
         function setDeleteEvent(field) {
             field.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
-                var coords = getCoords(field);
-                
-                showMenu(coords.left, coords.top, coords.width, coords.height)
+                pressedField = field;
+                showMenu(e.clientX, e.clientY, field);
 
-                // var parentField = field.parentNode;
-                // parentField.parentNode.removeChild(parentField);
-
+                //Событие удаления поля по нажатию кнопки меню
+                menu.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    hideMenu();
+                    deleteField(() => {
+                        sendBtnHide();
+                    })
+                })
             })
         }
-        function getCoords(elem) { // кроме IE8-
-            var box = elem.getBoundingClientRect();
-            return {
-              top: box.top + pageYOffset,
-              left: box.left + pageXOffset,
-              width: box.width,
-              height: box.height
-            };
-          }
-          function showMenu(x, y, elemWidth, elemHeight) {
-            var menu = document.querySelector('.menu');
-            menu.style.left = x + elemWidth + 'px';
-            menu.style.top = y + elemHeight + 'px';
+
+
+
+        function deleteField(callback) {
+            var parentField = pressedField.parentNode;
+            parentField.parentNode.removeChild(parentField);
+            setTimeout(() => {
+                callback();
+            }, 200)
+
+        }
+
+        window.addEventListener('click', (event) => {
+            if (!event.target.classList.contains('page__field')) {
+                hideMenu();
+            }
+        })
+
+        function showMenu(x, y) {
+            menu.style.left = x + pageXOffset + 'px';
+            menu.style.top = y + pageYOffset + 'px';
             menu.classList.add('show-menu');
+        }
+
+        function hideMenu() {
+            menu.classList.remove('show-menu');
+        }
+
+        function sendBtnShow() {
+            if (contactsForm.querySelectorAll('.contacts-form__field')) sendFieldsButton.style.display = 'block';
+        }
+        function sendBtnHide() {
+            if (!contactsForm.querySelectorAll('.contacts-form__field')) sendFieldsButton.style.display = 'none';
         }
     }, false);
 }());
@@ -246,6 +271,3 @@
 
 
 
-function hideMenu() {
-    menu.classList.remove('show-menu');
-}

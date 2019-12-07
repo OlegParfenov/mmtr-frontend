@@ -545,7 +545,16 @@ select{
   padding: 0;
   position: absolute;
   display: flex;
+  opacity: 0;
+  // transition: 0.3s;
+  &-btn{
+    background: #222222;
+    color: #ffffff;
+  }
 }
-.showMenu{
-  display: block !important;
+.show-menu{
+  // display: block !important;
+  opacity: 1 !important;
+  transition: 0.3s;
+  
 }

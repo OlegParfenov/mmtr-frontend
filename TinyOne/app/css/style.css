@@ -444,7 +444,12 @@ select {
   margin: 0;
   padding: 0;
   position: absolute;
-  display: flex; }
+  display: flex;
+  opacity: 0; }
+  .menu-btn {
+    background: #222222;
+    color: #ffffff; }
 
-.showMenu {
-  display: block !important; }
+.show-menu {
+  opacity: 1 !important;
+  transition: 0.3s; }
