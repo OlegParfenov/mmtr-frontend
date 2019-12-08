@@ -6,13 +6,15 @@
             windowCross = document.querySelectorAll('.popup-window__cross'), //Крест - закрытие окна
             selectWindowButton = document.querySelectorAll('.popup-window__button'),//Кнопка - выбор поля
             createWindow = document.querySelector('.create-field-window'),//Окно создания поля
+            validWindow = document.querySelector('.success-validation-window'),//Окно успешной валидации
             createButton = document.querySelector('#createButton'),//Кнопка создания поля
+            validBtn = document.querySelector('#validBtn'),
             modalBackground = document.querySelector('.modal'),
             typeField = '',//Тип поля, который выбрал пользователь для создания
             sendFieldsButton = document.querySelector('.contacts-form__button_send'),//Кнопка, отправляющая 
             contactsForm = document.querySelector('.contacts-form'),//Форма содержащая контакты и поля для заполнения
-            menu = document.querySelector('.menu'),
-            pressedField;
+            menu = document.querySelector('.menu'),//Контекстное меню
+            pressedField;//Поле, для которого вызвали контекстное меню
 
         //Конструктор поля
         function field(type, name, min, max, necessarily) {
@@ -74,13 +76,14 @@
             }
             newField.classList.add('page__field');
             newField.id = this.uuid; //Добавляем идентификатор полю
-            sendBtnShow();
-            // sendFieldsButton.style.display = 'block';
+            // sendBtnShow();
+            sendFieldsButton.style.display = 'block';
         }
 
         //Кнопка "+" - открывает окно выбора типа поля
         addButton.addEventListener('click', () => {
             modalBackground.style.display = 'block';
+
             showTheWindow(selectWindow);
         })
 
@@ -97,10 +100,12 @@
                         document.querySelector('#minCountInput').style.display = 'block';
                         document.querySelector('#maxCountInput').style.display = 'block';
                     }
+
                     showTheWindow(createWindow);
                 });
             })
         })
+
         createButton.addEventListener('click', () => {
             var name = document.querySelector('#nameInput').value;
             var minCount = document.querySelector('#minCountInput').value;
@@ -114,48 +119,63 @@
             if (maxCount <= 0) maxCount = '';
 
             let newField = new field(typeField, name, minCount, maxCount, necessarily);
-
             newField.create();
 
             // Добавление события для валидации min  количества символов
             minCountUpdateEvent();
-            closeModal(300);
-            closeTheWindow(createWindow);
+            closeModal();
 
+            closeTheWindow(createWindow);
         });
 
         //Закрытие окна по нажатию на крест
         windowCross.forEach((cross) => {
             cross.addEventListener('click', () => {
                 lastButton = '';
-                closeModal(300);
-                closeTheWindow(cross.parentNode.parentNode); //Закрывает окно, в котором находится крест   
-
+                closeModal();
+                closeTheWindow(cross.parentNode.parentNode); //Закрывает окно, в котором находится крест
             })
         })
 
         sendFieldsButton.addEventListener('click', () => {
-            if (validationCheck()) alert('Ок')
+            if (validationCheck()) {
+                modalBackground.style.display = 'block';
+                showTheWindow(validWindow);
+                // alert('OK');
+            }
             else alert('Не ок')
+        })
+
+        validBtn.addEventListener('click', () => {
+            closeModal();
+            closeTheWindow(validWindow);
         })
 
         function closeTheWindow(window, callback) {
             window.classList.add('display_none');
             setTimeout(() => {
-                window.classList.remove('display_block');
                 callback();
-            }, 350)
-
+                window.style.display = 'none';
+                window.classList.remove('display_block');
+            }, 300)
         }
+
         function showTheWindow(window) {
+            selectWindow.style.display = 'none';
+            validWindow.style.display = 'none';
+            createWindow.style.display = 'none';
+            window.style.display = 'block';
+
             window.classList.remove('display_none');
             window.classList.add('display_block');
         }
-        function closeModal(time) {
+
+        function closeModal(time = 300) {
             setTimeout(() => {
                 modalBackground.style.display = 'none';
             }, time)
         }
+
         function uuidv4() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                 var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -168,7 +188,7 @@
             fields.forEach((e) => {
                 e.addEventListener('input', () => {
                     if (e.value.length < e.minLength && e.value.length != 0) {
-                        e.style.background = 'rgba(255, 86, 86, 0.651)';
+                        e.classList.add('page__field_backlight_red');
                         //Если у поля уже есть предупреждение о кол-ве символов, то его выводить не нужно
                         if (!e.parentNode.querySelector('.contacts-form__characters-warning-label')) {
                             e.insertAdjacentHTML('beforebegin',
@@ -178,7 +198,7 @@
                         }
                     }
                     else {
-                        e.style.background = '#ffffff';
+                        e.classList.remove('page__field_backlight_red');
                         e.parentNode.querySelector('.contacts-form__characters-warning-label').remove();
                     }
                 })
@@ -191,6 +211,8 @@
             fields.forEach((e) => {
                 if (!necessarilyCheck(e)) {
                     check = false;
+                    backlight(e);
+
                 }
             })
             if (check) return true
@@ -213,6 +235,17 @@
             return true
         }
 
+        function backlight(field) {
+            if (field.type != 'checkbox') field.classList.add('page__field_backlight_red');
+            else{
+                field.parentNode.classList.add('contacts-form__checkbox_backlight');
+            }
+            
+            // else{
+            // }
+
+        }
+
         function setDeleteEvent(field) {
             field.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
@@ -229,8 +262,6 @@
                 })
             })
         }
-
-
 
         function deleteField(callback) {
             var parentField = pressedField.parentNode;
@@ -257,9 +288,9 @@
             menu.classList.remove('show-menu');
         }
 
-        function sendBtnShow() {
-            if (contactsForm.querySelectorAll('.contacts-form__field')) sendFieldsButton.style.display = 'block';
-        }
+        // function sendBtnShow() {
+        //     if (contactsForm.querySelectorAll('.contacts-form__field')) sendFieldsButton.style.display = 'block';
+        // }
         function sendBtnHide() {
             if (!contactsForm.querySelectorAll('.contacts-form__field')) sendFieldsButton.style.display = 'none';
         }
