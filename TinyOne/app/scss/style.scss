@@ -402,6 +402,16 @@ select {
   right: 0;
   top: 0;
   bottom: 0;
+  &__animation {
+    &_from-left {
+      animation-name: animateleft;
+      animation-duration: 0.4s;
+    }
+    &_to-right {
+      animation: animateright;
+      animation-duration: 0.4s;
+    }
+  }
 
   &__head {
     height: 25px;
@@ -531,49 +541,42 @@ select {
   display: flex;
   align-items: center;
 }
-.display {
-  &_block {
-    animation-name: animateleft;
-    animation-duration: 0.4s;
-  }
-  &_none {
-    animation: animateright;
-    animation-duration: 0.4s;
-  }
-}
+// .display {
+//   &_block {
+//     animation-name: animateleft;
+//     animation-duration: 0.4s;
+//   }
+//   &_none {
+//     animation: animateright;
+//     animation-duration: 0.4s;
+//   }
+// }
 
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  display: none;
+  position: fixed;
+  padding-top: 100px;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
   transition: 0.2s;
-  // background: rgba(255, 86, 86, 0.651);
 }
 
 .menu {
-  // display: none;
   margin: 0;
   padding: 0;
   position: absolute;
   display: flex;
   opacity: 0;
-
-  // transition: 0.3s;
+  &_show {
+    opacity: 1 !important;
+    transition: 0.3s;
+  }
   &-btn {
     background: #222222;
     color: #ffffff;
   }
-}
-.show-menu {
-  // display: block !important;
-  opacity: 1 !important;
-  transition: 0.3s;
 }

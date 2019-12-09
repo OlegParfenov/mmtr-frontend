@@ -320,6 +320,12 @@ select {
   right: 0;
   top: 0;
   bottom: 0; }
+  .popup-window__animation_from-left {
+    animation-name: animateleft;
+    animation-duration: 0.4s; }
+  .popup-window__animation_to-right {
+    animation: animateright;
+    animation-duration: 0.4s; }
   .popup-window__head {
     height: 25px;
     display: flex;
@@ -425,35 +431,16 @@ select {
   display: flex;
   align-items: center; }
 
-.display_block {
-  animation-name: animateleft;
-  animation-duration: 0.4s; }
-
-.display_none {
-  animation: animateright;
-  animation-duration: 0.4s; }
-
 .modal {
   display: none;
-  /* Hidden by default */
   position: fixed;
-  /* Stay in place */
-  z-index: 1;
-  /* Sit on top */
   padding-top: 100px;
-  /* Location of the box */
   left: 0;
   top: 0;
   width: 100%;
-  /* Full width */
   height: 100%;
-  /* Full height */
   overflow: auto;
-  /* Enable scroll if needed */
-  background-color: black;
-  /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
-  /* Black w/ opacity */
   transition: 0.2s; }
 
 .menu {
@@ -462,10 +449,9 @@ select {
   position: absolute;
   display: flex;
   opacity: 0; }
+  .menu_show {
+    opacity: 1 !important;
+    transition: 0.3s; }
   .menu-btn {
     background: #222222;
     color: #ffffff; }
-
-.show-menu {
-  opacity: 1 !important;
-  transition: 0.3s; }
