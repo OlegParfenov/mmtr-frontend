@@ -75,6 +75,10 @@
           `<p class="contacts-form__required-field-label page__warn-label">Обязательное поле *
                  </p>`);
       }
+      else{
+        newField.insertAdjacentHTML('beforebegin',
+        `<p class="page__warn-label"></p>`);
+      }
       newField.classList.add('page__field');
       newField.id = this.uuid; // Добавляем идентификатор полю
       // sendBtnShow();

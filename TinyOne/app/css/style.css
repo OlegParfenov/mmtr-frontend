@@ -48,7 +48,10 @@ select {
   .page__warn-label {
     margin: 0;
     color: #df4242;
-    font-size: 10px; }
+    font-size: 10px;
+    height: 8px;
+    margin-bottom: 5px;
+    display: inline-block; }
   .page-content {
     width: 1200px;
     margin: 0 auto;
@@ -293,12 +296,7 @@ select {
         outline-offset: -5px;
         content: ""; }
     .contacts-form__required-field-label {
-      margin-bottom: 5px;
-      margin-right: 5px;
-      display: inline-block; }
-    .contacts-form__characters-warning-label {
-      margin-bottom: 5px;
-      display: inline-block; }
+      margin-right: 5px; }
     .contacts-form__text-input {
       height: 30px;
       width: 100%; }
