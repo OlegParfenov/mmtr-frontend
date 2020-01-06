@@ -44,8 +44,6 @@
       divContainer.appendChild(newField);
       newField.insertAdjacentHTML('afterend', `<label for="${this.uuid}">${this.name}</label>`);
 
-      setDeleteEvent(newField.parentNode);// Добавление обработчика удаления
-
       newField.classList.add('page__field');
       newField.id = this.uuid; // Добавляем идентификатор полю
 
@@ -66,7 +64,6 @@
 
       fieldContainer.appendChild(newField);
       element.sendFieldsButton.before(fieldContainer);// Добавление поля до кнопки "send"
-      setDeleteEvent(newField); // Добавление обработчика удаления
 
       newField.classList.add('page__field');
       newField.id = this.uuid; // Добавляем идентификатор полю
@@ -99,7 +96,7 @@
     element.addButton.addEventListener('click', () => {
       element.modalBackground.style.display = 'block';
 
-      showTheWindow(element.selectWindow);
+      showWindow(element.selectWindow);
     });
 
     // Обработчик клика на кнопку с типом поля (select, input, textarea)
@@ -116,7 +113,7 @@
             document.querySelector('#maxCountInput').style.display = 'block';
           }
 
-          showTheWindow(element.createWindow);
+          showWindow(element.createWindow);
         });
       });
     });
@@ -165,7 +162,7 @@
     element.sendFieldsButton.addEventListener('click', () => {
       if (validationCheck()) {
         element.modalBackground.style.display = 'block';
-        showTheWindow(element.validWindow);
+        showWindow(element.validWindow);
       }
     });
 
@@ -174,7 +171,7 @@
       closeTheWindow(element.validWindow);
     });
 
-    function closeTheWindow(window, callback) {
+    function closeTheWindow(window, callback = () => { }) {
       window.classList.add('popup-window__animation_to-right');
       setTimeout(() => {
         callback();
@@ -183,7 +180,7 @@
       }, 300);
     }
 
-    function showTheWindow(window) {
+    function showWindow(window) {
       element.selectWindow.style.display = 'none';
       element.validWindow.style.display = 'none';
       element.createWindow.style.display = 'none';
@@ -209,7 +206,7 @@
     function minCountUpdateEvent() {
       const fields = document.querySelectorAll('.page__text-input');
       fields.forEach((e) => {
-        e.addEventListener('input', () => {
+        e.oninput = () => {
           if (e.value.length < e.minLength && e.value.length != 0) {
             e.classList.add('page__field_backlight_red');
             // Если у поля уже есть предупреждение о кол-ве символов, то его выводить не нужно
@@ -224,7 +221,7 @@
             e.classList.remove('page__field_backlight_red');
             e.parentNode.querySelector('.contacts-form__characters-warning-label').remove();
           }
-        });
+        };
       });
     }
 
@@ -265,31 +262,33 @@
         field.parentNode.classList.add('contacts-form__checkbox_backlight');
       }
     }
+    // Делегирование событий для удаления полей на форме
+    element.contactsForm.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      if (e.target.classList.contains('page__field')) {
+        pressedField = e.target;
+      }
+      if (e.target.parentNode.classList.contains('contacts-form__checkbox')) {
+        pressedField = e.target.parentNode;
+      }
+      showMenu(e.clientX, e.clientY, field);
+    });
+    // Меню для удаления поля
+    element.menu.addEventListener('click', (e) => {
+      e.preventDefault();
+      hideMenu();
+      deleteField();
+      hideSendBtn();
+    });
 
-    function setDeleteEvent(field) {
-      field.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        pressedField = field;
-        showMenu(e.clientX, e.clientY, field);
-
-        // Событие удаления поля по нажатию кнопки меню
-        element.menu.addEventListener('click', (e) => {
-          e.preventDefault();
-          hideMenu();
-          deleteField();
-          hideSendBtn();
-        });
-      });
-    }
-
-    function deleteField(callback) {
+    function deleteField(callback = () => { }) {
       const parentField = pressedField.parentNode;
       parentField.parentNode.removeChild(parentField);
       setTimeout(() => {
         callback();
       }, 200);
     }
-    function createFieldContainer(){
+    function createFieldContainer() {
       fieldContainer = document.createElement('div');
       fieldContainer.classList.add('contacts-form__field');
       return fieldContainer
