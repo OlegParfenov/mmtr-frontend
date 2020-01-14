@@ -5,7 +5,6 @@ body {
   padding: 0;
 }
 
-
 body,
 textarea,
 input {
@@ -34,7 +33,7 @@ select {
       background: rgba(255, 86, 86, 0.651);
     }
   }
-  &_color_y {
+  &_color_y { 
     background: #fcdb00;
   }
   &_color_w {
@@ -59,7 +58,7 @@ select {
     margin-bottom: 15px;
     border: 2px solid rgb(34, 34, 34);
   }
-  &__warn-label {
+  &__warn-label { 
     margin: 0;
     color: #df4242;
     font-size: 10px;

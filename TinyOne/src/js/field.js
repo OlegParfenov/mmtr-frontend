@@ -16,7 +16,7 @@ export default function field() {
       let typeField = ''; // Тип поля, который выбрал пользователь для создания
       let pressedField;// Поле, для которого вызвали контекстное меню
       let newField;
-       
+        
       // Конструктор поля
       function field(type, name, min, max, necessarily) {
         this.uuid = uuidv4(); // Генерация идентификатора
@@ -147,7 +147,7 @@ export default function field() {
       // Закрытие окна по нажатию на крест
       element.windowCross.forEach((cross) => {
         cross.addEventListener('click', () => {
-          lastButton = '';
+          // lastButton = '';
           closeModal();
           // Закрывает окно, в котором находится крест
           closeTheWindow(cross.parentNode.parentNode);
