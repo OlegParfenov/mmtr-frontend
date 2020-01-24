@@ -206,7 +206,4 @@ function hideSendBtn() {
         element.sendFieldsButton.style.display = 'none';
     }
 }
-function showSendBtn() {
-    element.sendFieldsButton.style.display = 'block';
-}
-export { showSendBtn }
+

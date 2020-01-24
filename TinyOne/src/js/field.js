@@ -1,4 +1,3 @@
-import { showSendBtn } from './index';
 let element = {
   addButton: document.querySelector('.contacts-form__button_add'), // Открытие окна выбора поля
   selectWindow: document.querySelector('.select-field-window'), // Окно выбора типа создаваемого поля
@@ -101,5 +100,8 @@ function createFieldContainer() {
   const fieldContainer = document.createElement('div');
   fieldContainer.classList.add('contacts-form__field');
   return fieldContainer
+}
+function showSendBtn() {
+  element.sendFieldsButton.style.display = 'block';
 }
 export { element, Field }
