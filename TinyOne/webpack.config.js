@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //Для сборки js
 module.exports = {
   entry: {
-    main: ['./src/js/index.js']
+    main: './src/js/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -22,29 +22,14 @@ module.exports = {
       },
       {
         test: /\.s?css$/,
-        use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },
 
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'style.css',
-    }),
     new HtmlWebpackPlugin({
-      inject: false,
-      hash: true,
-      template: './public/index.html',
-      filename: 'index.html'
+      template: './src/index.html',
     })
   ],
-  //Для Live-reload
-  devServer: {
-    contentBase: __dirname + '/',
-    host: 'localhost',
-    port: 8080,
-    hot: true,
-  },
-  // watch: true,
 };
-
