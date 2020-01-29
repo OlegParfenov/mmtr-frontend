@@ -29,7 +29,7 @@ select {
   width: 100%;
   height: 100vh;
   &__field {
-    &_backlight_red {
+    &_highlighting_red {
       background: rgba(255, 86, 86, 0.651);
     }
   }
@@ -343,7 +343,7 @@ select {
       margin: auto;
       margin-bottom: 15px;
       font-size: 14px;
-      &_backlight {
+      &_highlighting {
         & label::before {
           background: rgba(255, 86, 86, 0.651);
         }

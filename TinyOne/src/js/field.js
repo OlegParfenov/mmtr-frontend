@@ -1,21 +1,17 @@
-let element = {
-  addButton: document.querySelector('.contacts-form__button_add'), // Открытие окна выбора поля
-  selectWindow: document.querySelector('.select-field-window'), // Окно выбора типа создаваемого поля
-  windowCross: document.querySelectorAll('.popup-window__cross'), // Крест - закрытие окна
-  selectWindowButton: document.querySelectorAll('.popup-window__button'), // Кнопка - выбор поля
-  createWindow: document.querySelector('.create-field-window'), // Окно создания поля
-  validWindow: document.querySelector('.success-validation-window'), // Окно успешной валидации
-  createButton: document.querySelector('#createButton'), // Кнопка создания поля
-  validBtn: document.querySelector('#validBtn'),//Кнопка для валидации полей
-  modalBackground: document.querySelector('.modal'),//Затемнение для модального окна
-  sendFieldsButton: document.querySelector('.contacts-form__button_send'), // Кнопка, отправляющая
-  contactsForm: document.querySelector('.contacts-form'), // Форма содержащая контакты и поля для заполнения
-  menu: document.querySelector('.menu'), // Контекстное меню
-  typeField: '', // Тип поля, который выбрал пользователь для создания
-  pressedField: '',// Поле, для которого вызвали контекстное меню
-  newField: '',
-}
+import getElements from './element'
 
+let element;
+let promise = getElements(document);
+promise
+    .then(
+        result => {
+            element = result;
+        },
+        error => {
+            console.log(error);
+        }
+
+    );
 // Конструктор поля
 function Field(type, name, min, max, necessarily) {
   this.uuid = uuidv4(); // Генерация идентификатора
@@ -35,7 +31,6 @@ Field.prototype.createCheckbox = function () {
   divContainer.classList.add('contacts-form__checkbox');
   element.newField = document.createElement('input');
   element.newField.type = 'checkbox';// Создание checkbox
-
 
   fieldContainer.appendChild(divContainer);
   element.sendFieldsButton.before(fieldContainer);
@@ -104,4 +99,4 @@ function createFieldContainer() {
 function showSendBtn() {
   element.sendFieldsButton.style.display = 'block';
 }
-export { element, Field }
+export { Field }
