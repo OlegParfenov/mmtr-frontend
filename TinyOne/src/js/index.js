@@ -165,25 +165,21 @@ function start() {
     }
     function validationCheck() {
         const fields = document.querySelectorAll('.page__field');
-        let check = true;
-        fields.forEach((field) => {
-            if (!necessarilyCheck(field)) {
-                check = false;
-                highlighting(field);
-            }
-        });
-        return check
+        const result = [].filter.call(fields, field => !necessarilyCheck(field));
+        return !result[0] ?  true : false;
     }
     function necessarilyCheck(field) {
         let result = true;
         if (field.type == 'checkbox') {
             if (field.classList.contains('necessarily') && !field.checked) {
                 result = !result;
+                highlighting(field);
             }
         }
         else if ((field.classList.contains('necessarily') && !field.value)
             || (field.value.length < field.minLength)) {
             result = !result;
+            highlighting(field);
         }
         return result;
     }
