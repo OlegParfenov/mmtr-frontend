@@ -1,10 +1,10 @@
 import React from 'react'
 import {render} from 'react-dom'
-import './scss/helloworld.css';
+import './scss/helloworld.scss';
 function HelloWord(){
     return(
         <div>
-            <h1>Hello Word</h1>
+            <h1>He Word</h1>
         </div>
     )
 }
