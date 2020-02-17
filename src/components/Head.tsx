@@ -1,13 +1,19 @@
 import React from 'react'
+import Navbar from "react-bootstrap/Navbar";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import FormControl from "react-bootstrap/FormControl";
 import '../scss/Head.scss'
 
-let hello = 'Hello World';
 function Head() {
     return (
-        <div className='head'>
-            <h1>{hello}</h1>
-        </div>
+        <Navbar bg="primary" variant="dark" className="head">
+            <Navbar.Brand href="#home" className="head__brand">React</Navbar.Brand>
+            <Form inline className="head__form">
+                <FormControl type="text" placeholder="Поиск" className="mr-sm-2" />
+                <Button variant="outline-light">Поиск</Button>
+            </Form>
+        </Navbar>
     )
 }
-
 export default Head
