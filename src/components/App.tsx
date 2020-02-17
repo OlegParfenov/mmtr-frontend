@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from './Head';
-// import News from "./News";
+import Post from './Post';
 
 class App extends React.Component {
     constructor(props) {
@@ -8,7 +8,7 @@ class App extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            items: []
+            posts: []
         };
     }
 
@@ -19,7 +19,7 @@ class App extends React.Component {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        items: result
+                        posts: result
                     });
                 },
                 // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
@@ -35,7 +35,7 @@ class App extends React.Component {
 
     render() {
         // @ts-ignore
-        const { error, isLoaded, items } = this.state;
+        const { error, isLoaded, posts } = this.state;
         if (error) {
             return <div>Ошибка: {error.message}</div>;
         } else if (!isLoaded) {
@@ -44,19 +44,9 @@ class App extends React.Component {
             return (
                 <div>
                     <Head></Head>
-                    <ul>
-                        {items.map(item => (
-                            <div>
-                                {/*Где то тут по идее должен быть компонент News, я пока не успел сделать,*/}
-                                {/* В него надо передать параметры и он уже отрисует*/}
-                                <p>
-                                    Title: {item.title}
-                                </p>
-                                <p>
-                                    Body: {item.body}
-                                </p>
-                            </div>
-
+                    <ul className="list-unstyled">
+                        {posts.map(post => (
+                            <Post key={post.id} post={post}/>
                         ))}
                     </ul>
                 </div>
