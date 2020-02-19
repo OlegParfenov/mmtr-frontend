@@ -2,13 +2,21 @@ import React from 'react';
 import Head from './Head';
 import Post from './Post';
 
+// localStorage.favoritesIds = '[]';
+
+function getFavorites() {
+    let favoritesIds = JSON.parse(localStorage.favoritesIds);
+    return favoritesIds
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             isLoaded: false,
-            posts: []
+            posts: [],
+            favorites: getFavorites(),
         };
     }
 
@@ -32,10 +40,10 @@ class App extends React.Component {
                 }
             )
     }
-
     render() {
         // @ts-ignore
-        const { error, isLoaded, posts } = this.state;
+        const {error, isLoaded, posts, favorites} = this.state;
+
         if (error) {
             return <div>Ошибка: {error.message}</div>;
         } else if (!isLoaded) {
@@ -43,10 +51,10 @@ class App extends React.Component {
         } else {
             return (
                 <div>
-                    <Head></Head>
+                    <Head favorites={favorites}/>
                     <ul className="list-unstyled">
                         {posts.map(post => (
-                            <Post key={post.id} post={post}/>
+                            <Post key={post.id} post={post} favorites={favorites}/>
                         ))}
                     </ul>
                 </div>
