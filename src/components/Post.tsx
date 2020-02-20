@@ -4,8 +4,9 @@ import ButtonPanel from "./ButtonPanel";
 import '../scss/Post.scss';
 import {PostInterface} from '../interfaces/post.interface';
 
-function Post(props: { post: PostInterface }): JSX.Element {
-    let {post} = props;
+function Post(props: { post: PostInterface, dislikedIds: number[], dislikedIdsChangeState: any }): JSX.Element {
+    let {post, dislikedIds, dislikedIdsChangeState} = props;
+
     if (!isDisliked(post.id)) {
         return (
             <div>
@@ -13,7 +14,9 @@ function Post(props: { post: PostInterface }): JSX.Element {
                     <Media.Body>
                         <h5>{post.title}</h5>
                         <p>{post.body}</p>
-                        <ButtonPanel post={post}/>
+                        <ButtonPanel post={post}
+                                     dislikedIds={dislikedIds}
+                                     dislikedIdsChangeState={dislikedIdsChangeState}/>
                     </Media.Body>
                 </Media>
             </div>

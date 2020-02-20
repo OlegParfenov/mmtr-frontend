@@ -6,16 +6,25 @@ import {MyProps} from '../interfaces/props.interface';
 
 // localStorage.dislikedIds = '[]';
 
-
 class App extends React.Component<MyProps, MyState> {
     constructor(props) {
         super(props);
+
+        this.dislikedIdsChangeState = this.dislikedIdsChangeState.bind(this);
+
         this.state = {
             error: null,
             isLoaded: false,
             posts: [],
+            dislikedIds: getDislikedIds(),
         };
     }
+
+    dislikedIdsChangeState(arr: number[]): void {
+        this.setState({
+            dislikedIds: arr
+        })
+    };
 
     componentDidMount() {
         fetch('https://jsonplaceholder.typicode.com/posts')
@@ -39,7 +48,7 @@ class App extends React.Component<MyProps, MyState> {
     }
 
     render() {
-        const {error, isLoaded, posts} = this.state;
+        const {error, isLoaded, posts, dislikedIds} = this.state;
 
         if (error) {
             return <div>Ошибка: {error.message}</div>;
@@ -51,13 +60,21 @@ class App extends React.Component<MyProps, MyState> {
                     <Head/>
                     <ul>
                         {posts.map(post => (
-                            <Post key={post.id} post={post}/>
+                            <Post key={post.id}
+                                  post={post}
+                                  dislikedIds={dislikedIds}
+                                  dislikedIdsChangeState={this.dislikedIdsChangeState}/>
                         ))}
                     </ul>
                 </div>
             );
         }
     }
+}
+
+function getDislikedIds(): any {
+    let dislikedIds = JSON.parse(localStorage.dislikedIds);
+    return dislikedIds
 }
 
 export default App

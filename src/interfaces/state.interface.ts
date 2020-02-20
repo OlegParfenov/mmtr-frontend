@@ -4,4 +4,5 @@ export interface MyState {
     error: any
     isLoaded: boolean
     posts: PostInterface[]
+    dislikedIds: number[]
 }

@@ -4,8 +4,8 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import {PostInterface} from '../interfaces/post.interface'
 import '../scss/ButtonPanel.scss'
 
-function ButtonPanel(props: { post: PostInterface }): JSX.Element {
-    let {post} = props;
+function ButtonPanel(props: { post: PostInterface, dislikedIds: number[],dislikedIdsChangeState: any }): JSX.Element {
+    let {post, dislikedIdsChangeState} = props;
 
     function likeButtonChangeState(likeButton: any): void {
         likeButton = likeButton.target;
@@ -20,6 +20,7 @@ function ButtonPanel(props: { post: PostInterface }): JSX.Element {
             dislikedIds.push(post.id);
             localStorage.dislikedIds = JSON.stringify(dislikedIds);
             deleteFavorites(post.id);
+            dislikedIdsChangeState(dislikedIds);
         }
     }
 
