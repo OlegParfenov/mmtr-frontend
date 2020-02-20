@@ -5,11 +5,12 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import '../scss/Head.scss'
 
-function Head(props) {
+function Head() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let {favorites} = props;
     function showFavorites() {
-        console.log(JSON.parse(localStorage.favoritesIds));
+        console.log('---' + JSON.parse(localStorage.favoritesIds));
+        console.log('---' + JSON.parse(localStorage.dislikedIds));
+
     }
     return (
         <Navbar bg="primary" variant="dark" className="head">

@@ -1,67 +1,60 @@
 import React from 'react'
+import Button from 'react-bootstrap/Button';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import {PostInterface} from '../interfaces/post.interface'
 import '../scss/ButtonPanel.scss'
-import Button from "react-bootstrap/Button";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 
-function ButtonPanel(props) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let {post, favorites} = props;
+function ButtonPanel(props: { post: PostInterface }): JSX.Element {
+    let {post} = props;
 
-    function likeButtonChangeState(likeButton) {
+    function likeButtonChangeState(likeButton: any): void {
         likeButton = likeButton.target;
         const isPressed = likeButton.classList.contains('button-toolbar__like-button_state_pressed');
         isPressed ? setUnPressedState(likeButton) : setPressedState(likeButton);
+    }
 
-        function setUnPressedState(button) {
-            button.classList.remove('button-toolbar__like-button_state_pressed');
-            // let id = favorites.findIndex(item => item === post.id);
-            // favorites.splice(id, 1)
+    function dislikeButtonChangeState(): void {
+        let dislikedIds = JSON.parse(localStorage.dislikedIds);
+        let result = dislikedIds.filter(item => item === post.id);
+        if (result.length !== 1) {
+            dislikedIds.push(post.id);
+            localStorage.dislikedIds = JSON.stringify(dislikedIds);
             deleteFavorites(post.id);
         }
-
-        function setPressedState(button) {
-            button.classList.add('button-toolbar__like-button_state_pressed');
-            // favorites.push(post.id);
-            setFavorites(post.id);
-        }
     }
-    if(isLiked(post.id)){
-        return (
-            <ButtonToolbar className='button-toolbar'>
 
-            <span className='button-toolbar__like-button button-toolbar__like-button_state_pressed'
+    function setUnPressedState(button: any): void {
+        button.classList.remove('button-toolbar__like-button_state_pressed');
+        deleteFavorites(post.id);
+    }
+
+    function setPressedState(button: any): void {
+        button.classList.add('button-toolbar__like-button_state_pressed');
+        setFavorites(post.id);
+    }
+
+    const likeButtonClass = isLiked(post.id) ?
+        'button-toolbar__like-button button-toolbar__like-button_state_pressed' : 'button-toolbar__like-button';
+    return (
+        <ButtonToolbar className='button-toolbar'>
+            <span className={likeButtonClass}
                   onClick={(e) => likeButtonChangeState(e)}>♥</span>
-
-                <Button variant="outline-primary" className='button-toolbar__not-like-button' size="sm">Не нравится</Button>
-            </ButtonToolbar>
-        )
-    }
-    else{
-        return (
-            <ButtonToolbar className='button-toolbar'>
-
-            <span className='button-toolbar__like-button'
-                  onClick={(e) => likeButtonChangeState(e)}>♥</span>
-
-                <Button variant="outline-primary" className='button-toolbar__not-like-button' size="sm">Не нравится</Button>
-            </ButtonToolbar>
-        )
-    }
-
+            <Button variant='outline-primary' className='button-toolbar__not-like-button' size='sm'
+                    onClick={() => dislikeButtonChangeState()}>Не нравится</Button>
+        </ButtonToolbar>
+    )
 }
 
-
-function setFavorites(id) {
+function setFavorites(id: number): void {
     let favoritesIds = JSON.parse(localStorage.favoritesIds);
-
-    //Здесь должна быть проверка
-    let result = favoritesIds.filter(item=> item === id);
-    if(result.length !== 1){
+    let result = favoritesIds.filter(item => item === id);
+    if (result.length !== 1) {
         favoritesIds.push(id);
         localStorage.favoritesIds = JSON.stringify(favoritesIds);
     }
 }
-function deleteFavorites(id) {
+
+function deleteFavorites(id: number): void {
     let favoritesIds = JSON.parse(localStorage.favoritesIds);
     let index = favoritesIds.findIndex(item => item === id);
     favoritesIds.splice(index, 1)
@@ -69,10 +62,9 @@ function deleteFavorites(id) {
     localStorage.favoritesIds = JSON.stringify(favoritesIds);
 }
 
-function isLiked(id) {
+function isLiked(id: number): boolean {
     let favoritesIds = JSON.parse(localStorage.favoritesIds);
     favoritesIds = favoritesIds.filter(item => item === id);
-    //здесь исправить
     return favoritesIds.length > 0 ? true : false
 }
 

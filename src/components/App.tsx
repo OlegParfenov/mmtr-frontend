@@ -1,27 +1,24 @@
 import React from 'react';
 import Head from './Head';
 import Post from './Post';
+import {MyState} from '../interfaces/state.interface';
+import {MyProps} from '../interfaces/props.interface';
 
-// localStorage.favoritesIds = '[]';
+// localStorage.dislikedIds = '[]';
 
-function getFavorites() {
-    let favoritesIds = JSON.parse(localStorage.favoritesIds);
-    return favoritesIds
-}
 
-class App extends React.Component {
+class App extends React.Component<MyProps, MyState> {
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             isLoaded: false,
             posts: [],
-            favorites: getFavorites(),
         };
     }
 
     componentDidMount() {
-        fetch("https://jsonplaceholder.typicode.com/posts")
+        fetch('https://jsonplaceholder.typicode.com/posts')
             .then(res => res.json())
             .then(
                 (result) => {
@@ -40,9 +37,9 @@ class App extends React.Component {
                 }
             )
     }
+
     render() {
-        // @ts-ignore
-        const {error, isLoaded, posts, favorites} = this.state;
+        const {error, isLoaded, posts} = this.state;
 
         if (error) {
             return <div>Ошибка: {error.message}</div>;
@@ -51,10 +48,10 @@ class App extends React.Component {
         } else {
             return (
                 <div>
-                    <Head favorites={favorites}/>
-                    <ul className="list-unstyled">
+                    <Head/>
+                    <ul>
                         {posts.map(post => (
-                            <Post key={post.id} post={post} favorites={favorites}/>
+                            <Post key={post.id} post={post}/>
                         ))}
                     </ul>
                 </div>
