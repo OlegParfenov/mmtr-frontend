@@ -10,8 +10,8 @@ function Post(props: { post: PostInterface, dislikedIds: number[], dislikedIdsCh
     if (!isDisliked(post.id)) {
         return (
             <div>
-                <Media className='post'>
-                    <Media.Body>
+                <Media className='content'>
+                    <Media.Body className = 'content__news'>
                         <h5>{post.title}</h5>
                         <p>{post.body}</p>
                         <ButtonPanel post={post}
@@ -27,9 +27,11 @@ function Post(props: { post: PostInterface, dislikedIds: number[], dislikedIdsCh
 }
 
 function isDisliked(id): boolean {
+    if (localStorage.getItem('dislikedIds') !== null){
     let dislikedIds = JSON.parse(localStorage.dislikedIds);
     dislikedIds = dislikedIds.filter(item => item === id);
-    return dislikedIds.length > 0 ? true : false
+    return dislikedIds.length > 0 
+    }
 }
 
 export default Post

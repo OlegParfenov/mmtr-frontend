@@ -1,14 +1,60 @@
-.bg-red{
-    background-color: #ff4b55;
-}
-.head{
+// .bg-red{
+//     background-color: #ff4b55;
+// }
+// .head{
+//     display: flex;
+//     margin-bottom: 30px;
+//     &__brand{
+//         //align-self: flex-start !important;
+//     }
+//     &__form{
+//         margin-left: auto;
+//         margin-right: auto;
+//     }
+// }
+@import './BoxShadow.scss';
+
+.header{
+    margin: 0 auto;
+    width: 100%;
+    height: 70px;
+    background-color: rgb(0, 147, 167) !important;
     display: flex;
-    margin-bottom: 30px;
-    &__brand{
-        //align-self: flex-start !important;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    
+    &__search{
+        
+        width:800px !important;
+        &-input{
+            &:focus{
+                background-color: rgb(255, 255, 255) !important;
+            }
+            &:active{
+                @include box-shadow(none);
+            }
+            &::-webkit-input-placeholder {
+                color: rgb(167, 167, 167) !important;
+            } 
+            &::-moz-placeholder {
+                color: rgb(167, 167, 167) !important;
+            }
+
+        }
+        &-input, &-button{
+            border: none !important;
+            background-color: rgb(0, 108, 122) !important;
+            color: rgb(237, 238, 240) !important;
+            @include box-shadow(none);
+        }
+        &-button{
+            background-color: rgb(0, 87, 99) !important;
+            &:active{
+                @include box-shadow(none);
+                background-color: rgb(1, 119, 134) !important;
+            }
+        }
     }
-    &__form{
-        margin-left: auto;
-        margin-right: auto;
-    }
+
 }

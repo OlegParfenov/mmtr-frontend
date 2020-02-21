@@ -73,8 +73,10 @@ class App extends React.Component<MyProps, MyState> {
 }
 
 function getDislikedIds(): any {
+    if (localStorage.getItem('dislikedIds') !== null){
     let dislikedIds = JSON.parse(localStorage.dislikedIds);
     return dislikedIds
+    }
 }
 
 export default App

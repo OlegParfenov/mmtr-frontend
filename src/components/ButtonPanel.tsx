@@ -14,6 +14,7 @@ function ButtonPanel(props: { post: PostInterface, dislikedIds: number[],dislike
     }
 
     function dislikeButtonChangeState(): void {
+        if (localStorage.getItem('dislikedIds') !== null){
         let dislikedIds = JSON.parse(localStorage.dislikedIds);
         let result = dislikedIds.filter(item => item === post.id);
         if (result.length !== 1) {
@@ -22,6 +23,7 @@ function ButtonPanel(props: { post: PostInterface, dislikedIds: number[],dislike
             deleteFavorites(post.id);
             dislikedIdsChangeState(dislikedIds);
         }
+    }
     }
 
     function setUnPressedState(button: any): void {
@@ -47,6 +49,7 @@ function ButtonPanel(props: { post: PostInterface, dislikedIds: number[],dislike
 }
 
 function setFavorites(id: number): void {
+    if (localStorage.getItem('favoritesIds') !== null){
     let favoritesIds = JSON.parse(localStorage.favoritesIds);
     let result = favoritesIds.filter(item => item === id);
     if (result.length !== 1) {
@@ -54,19 +57,24 @@ function setFavorites(id: number): void {
         localStorage.favoritesIds = JSON.stringify(favoritesIds);
     }
 }
+}
 
 function deleteFavorites(id: number): void {
+    if (localStorage.getItem('favoritesIds') !== null){
     let favoritesIds = JSON.parse(localStorage.favoritesIds);
     let index = favoritesIds.findIndex(item => item === id);
     favoritesIds.splice(index, 1)
     //Здесь должна быть проверка
     localStorage.favoritesIds = JSON.stringify(favoritesIds);
+    }
 }
 
 function isLiked(id: number): boolean {
+    if (localStorage.getItem('favoritesIds') !== null){
     let favoritesIds = JSON.parse(localStorage.favoritesIds);
     favoritesIds = favoritesIds.filter(item => item === id);
     return favoritesIds.length > 0 ? true : false
+    }
 }
 
 export default ButtonPanel
