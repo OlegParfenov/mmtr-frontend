@@ -26,4 +26,5 @@ const Post = (props: IPostProps): JSX.Element => {
     )
 }
 
+
 export default Post
