@@ -1,8 +1,8 @@
-import {PostInterface} from './post.interface';
+import {IPostLikes} from './post.interface';
 
 export interface MyState {
     error: any
     isLoaded: boolean
-    posts: PostInterface[]
+    posts: IPostLikes[]
     dislikedIds: number[]
 }

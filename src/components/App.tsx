@@ -9,9 +9,6 @@ import {MyProps} from '../interfaces/props.interface';
 class App extends React.Component<MyProps, MyState> {
     constructor(props) {
         super(props);
-
-        this.dislikedIdsChangeState = this.dislikedIdsChangeState.bind(this);
-
         this.state = {
             error: null,
             isLoaded: false,
@@ -20,11 +17,38 @@ class App extends React.Component<MyProps, MyState> {
         };
     }
 
-    dislikedIdsChangeState(arr: number[]): void {
-        this.setState({
-            dislikedIds: arr
-        })
-    };
+    onDislikeButton = (id: number)  => {
+        if (localStorage.getItem('dislikedIds') !== null) {
+            let dislikedIds = JSON.parse(localStorage.dislikedIds);
+            let result = dislikedIds.filter(item => item === id);
+
+            if (result.length !== 1) {
+                dislikedIds.push(id);
+                localStorage.dislikedIds = JSON.stringify(dislikedIds);
+                this.deleteFavorites(id);
+                this.setState({
+                    dislikedIds: dislikedIds
+                })
+                console.log(localStorage.dislikedIds);
+            }
+        }
+    }
+
+    dislikeCheck(posts) {
+        const dislikedIds = getDislikedIds();
+        return posts.filter(item => !!!dislikedIds.find((id)=>{
+            return id === item.id;
+        }));
+    }
+    deleteFavorites(id: number): void {
+        if (localStorage.getItem('favoritesIds') !== null) {
+            let favoritesIds = JSON.parse(localStorage.favoritesIds);
+            let index = favoritesIds.findIndex(item => item === id);
+            favoritesIds.splice(index, 1)
+            //Здесь должна быть проверка
+            localStorage.favoritesIds = JSON.stringify(favoritesIds);
+        }
+    }
 
     componentDidMount() {
         fetch('https://jsonplaceholder.typicode.com/posts')
@@ -36,8 +60,6 @@ class App extends React.Component<MyProps, MyState> {
                         posts: result
                     });
                 },
-                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-                // чтобы не перехватывать исключения из ошибок в самих компонентах.
                 (error) => {
                     this.setState({
                         isLoaded: true,
@@ -48,7 +70,8 @@ class App extends React.Component<MyProps, MyState> {
     }
 
     render() {
-        const {error, isLoaded, posts, dislikedIds} = this.state;
+        const {error, isLoaded, posts} = this.state;
+        const filteredPosts = this.dislikeCheck(posts);
 
         if (error) {
             return <div>Ошибка: {error.message}</div>;
@@ -59,11 +82,11 @@ class App extends React.Component<MyProps, MyState> {
                 <div>
                     <Head/>
                     <ul>
-                        {posts.map(post => (
+                        {filteredPosts.map(post => (
                             <Post key={post.id}
                                   post={post}
-                                  dislikedIds={dislikedIds}
-                                  dislikedIdsChangeState={this.dislikedIdsChangeState}/>
+                                  // dislikedIds={dislikedIds}
+                                  onDislikeButton={this.onDislikeButton}/>
                         ))}
                     </ul>
                 </div>
@@ -73,10 +96,11 @@ class App extends React.Component<MyProps, MyState> {
 }
 
 function getDislikedIds(): any {
-    if (localStorage.getItem('dislikedIds') !== null){
-    let dislikedIds = JSON.parse(localStorage.dislikedIds);
-    return dislikedIds
+    if (localStorage.getItem('dislikedIds') !== null) {
+        let dislikedIds = JSON.parse(localStorage.dislikedIds);
+        return dislikedIds
     }
+    else return []
 }
 
 export default App

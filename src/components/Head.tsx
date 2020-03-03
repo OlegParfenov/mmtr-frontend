@@ -4,7 +4,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import '../scss/Head.scss'
 
-function Head(): JSX.Element {
+const Head = (): JSX.Element => {
     return (
         <div className='header'>
             <InputGroup className="mb-3 header__search">
