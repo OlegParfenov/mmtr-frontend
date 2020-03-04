@@ -18,7 +18,9 @@ class App extends React.Component<MyProps, MyState> {
     onDislikeButton = (id: number) => {
         let newPosts = this.state.posts.map((post) => {
             return id === post.id ? {...post, disliked: true} : {...post};
+            
         })
+        console.log(newPosts)
         this.setState({
             posts: newPosts
         })
@@ -28,9 +30,31 @@ class App extends React.Component<MyProps, MyState> {
         localStorage.dislikedIds = JSON.stringify(newIds);
     }
 
-    dislikeFind(postId) {
-        const dislikedIds = getDislikedIds();
+
+    dislikeFind(postId: number) {
+        const dislikedIds = getLSIds('dislikedIds');
         return !!dislikedIds.find(id => id === postId);
+    }
+
+    
+    onLikeButton = (id:number) => {
+        let newPosts = this.state.posts.map((post)=>{
+            return id === post.id ? {...post, liked: !post.liked} : {...post};
+        })
+
+        this.setState({
+            posts: newPosts
+        })
+
+        let newIds = newPosts
+            .filter(post => post.liked)
+            .map(post => post.id);
+        localStorage.likedIds = JSON.stringify(newIds);
+    }
+
+    likeFind(postId: number) {
+        const likedIds = getLSIds('likedIds');
+        return !!likedIds.find(id => id === postId);
     }
 
     // deleteFavorites(id: number): void {
@@ -53,7 +77,8 @@ class App extends React.Component<MyProps, MyState> {
                         posts: result.map(post => {
                             return ({
                                 ...post,
-                                disliked: this.dislikeFind(post.id)
+                                disliked: this.dislikeFind(post.id),
+                                liked: this.likeFind(post.id)
                             })
                         })
                     });
@@ -84,7 +109,9 @@ class App extends React.Component<MyProps, MyState> {
                                     <Post
                                         key={post.id}
                                         post={post}
-                                        onDislikeButton={this.onDislikeButton}/>
+                                        onDislikeButton={this.onDislikeButton}
+                                        onLikeButton = {this.onLikeButton}
+                                        />
                                 )
                             )}
                     </ul>
@@ -94,10 +121,10 @@ class App extends React.Component<MyProps, MyState> {
     }
 }
 
-function getDislikedIds(): any {
-    if (localStorage.getItem('dislikedIds') !== null) {
-        let dislikedIds = JSON.parse(localStorage.dislikedIds);
-        return dislikedIds
+function getLSIds(key: string): any {
+    if (localStorage.getItem(key) !== null) {
+        let arr = JSON.parse(localStorage.getItem(key));
+        return arr
     } else return []
 }
 

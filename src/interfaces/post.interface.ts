@@ -6,5 +6,6 @@ export interface IPost {
 }
 
 export interface IPostLikes extends IPost{
-    disliked: boolean
+    disliked: boolean,
+    liked: boolean
 }
