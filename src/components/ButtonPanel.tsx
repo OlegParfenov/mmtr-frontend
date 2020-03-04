@@ -1,7 +1,8 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import {IPost, IPostLikes} from '../interfaces/post.interface'
+import {IPost, } from '../interfaces/post.interface'
+// IPostLikes
 import '../scss/ButtonPanel.scss'
 
 interface IButtonPanelProps {

@@ -3,8 +3,7 @@ import Head from './Head';
 import Post from './Post';
 import {MyState} from '../interfaces/state.interface';
 import {MyProps} from '../interfaces/props.interface';
-
-// localStorage.dislikedIds = '[]';
+// import {IPostLikes} from "../interfaces/post.interface";
 
 class App extends React.Component<MyProps, MyState> {
     constructor(props) {
@@ -13,42 +12,36 @@ class App extends React.Component<MyProps, MyState> {
             error: null,
             isLoaded: false,
             posts: [],
-            dislikedIds: getDislikedIds(),
         };
     }
 
-    onDislikeButton = (id: number)  => {
-        if (localStorage.getItem('dislikedIds') !== null) {
-            let dislikedIds = JSON.parse(localStorage.dislikedIds);
-            let result = dislikedIds.filter(item => item === id);
-
-            if (result.length !== 1) {
-                dislikedIds.push(id);
-                localStorage.dislikedIds = JSON.stringify(dislikedIds);
-                this.deleteFavorites(id);
-                this.setState({
-                    dislikedIds: dislikedIds
-                })
-                console.log(localStorage.dislikedIds);
-            }
-        }
+    onDislikeButton = (id: number) => {
+        let newPosts = this.state.posts.map((post) => {
+            return id === post.id ? {...post, disliked: true} : {...post};
+        })
+        this.setState({
+            posts: newPosts
+        })
+        let newIds = newPosts
+            .filter(post => post.disliked)
+            .map(post => post.id);
+        localStorage.dislikedIds = JSON.stringify(newIds);
     }
 
-    dislikeCheck(posts) {
+    dislikeFind(postId) {
         const dislikedIds = getDislikedIds();
-        return posts.filter(item => !!!dislikedIds.find((id)=>{
-            return id === item.id;
-        }));
+        return !!dislikedIds.find(id => id === postId);
     }
-    deleteFavorites(id: number): void {
-        if (localStorage.getItem('favoritesIds') !== null) {
-            let favoritesIds = JSON.parse(localStorage.favoritesIds);
-            let index = favoritesIds.findIndex(item => item === id);
-            favoritesIds.splice(index, 1)
-            //Здесь должна быть проверка
-            localStorage.favoritesIds = JSON.stringify(favoritesIds);
-        }
-    }
+
+    // deleteFavorites(id: number): void {
+    //     if (localStorage.getItem('favoritesIds') !== null) {
+    //         let favoritesIds = JSON.parse(localStorage.favoritesIds);
+    //         let index = favoritesIds.findIndex(item => item === id);
+    //         favoritesIds.splice(index, 1)
+    //         //Здесь должна быть проверка
+    //         localStorage.favoritesIds = JSON.stringify(favoritesIds);
+    //     }
+    // }
 
     componentDidMount() {
         fetch('https://jsonplaceholder.typicode.com/posts')
@@ -57,7 +50,12 @@ class App extends React.Component<MyProps, MyState> {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        posts: result
+                        posts: result.map(post => {
+                            return ({
+                                ...post,
+                                disliked: this.dislikeFind(post.id)
+                            })
+                        })
                     });
                 },
                 (error) => {
@@ -71,8 +69,6 @@ class App extends React.Component<MyProps, MyState> {
 
     render() {
         const {error, isLoaded, posts} = this.state;
-        const filteredPosts = this.dislikeCheck(posts);
-
         if (error) {
             return <div>Ошибка: {error.message}</div>;
         } else if (!isLoaded) {
@@ -82,12 +78,15 @@ class App extends React.Component<MyProps, MyState> {
                 <div>
                     <Head/>
                     <ul>
-                        {filteredPosts.map(post => (
-                            <Post key={post.id}
-                                  post={post}
-                                  // dislikedIds={dislikedIds}
-                                  onDislikeButton={this.onDislikeButton}/>
-                        ))}
+                        {posts
+                            .filter(post => !post.disliked)
+                            .map(post => (
+                                    <Post
+                                        key={post.id}
+                                        post={post}
+                                        onDislikeButton={this.onDislikeButton}/>
+                                )
+                            )}
                     </ul>
                 </div>
             );
@@ -99,8 +98,7 @@ function getDislikedIds(): any {
     if (localStorage.getItem('dislikedIds') !== null) {
         let dislikedIds = JSON.parse(localStorage.dislikedIds);
         return dislikedIds
-    }
-    else return []
+    } else return []
 }
 
 export default App

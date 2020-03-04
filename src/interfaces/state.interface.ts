@@ -4,5 +4,5 @@ export interface MyState {
     error: any
     isLoaded: boolean
     posts: IPostLikes[]
-    dislikedIds: number[]
+    // dislikedIds: number[]
 }
