@@ -3,7 +3,7 @@ import Head from './Head';
 import Post from './Post';
 import {MyState} from '../interfaces/state.interface';
 import {MyProps} from '../interfaces/props.interface';
-// import {IPostLikes} from "../interfaces/post.interface";
+import {Like} from "../types/Like";
 
 class App extends React.Component<MyProps, MyState> {
     constructor(props) {
@@ -14,56 +14,29 @@ class App extends React.Component<MyProps, MyState> {
             posts: [],
         };
     }
-    
-    findPostId(postId: number, key:string) {
+
+    findPostId(postId: number, key: string) {
         const ids = getLSIds(key);
         return !!ids.find(id => id === postId);
     }
 
-    
-    onDislikeButton = (id: number) => {
-        let newPosts = this.state.posts.map((post) => {
-            return id === post.id ? {...post, disliked: true} : {...post};
-            
+    onClickButton = (id: number, key: Like): void =>  {
+        const newPosts = this.state.posts.map((post) => {
+            if (key === 'disliked') {
+                return id === post.id ? {...post, disliked: true} : {...post};
+            }
+            if (key === 'liked') {
+                return id === post.id ? {...post, liked: !post.liked} : {...post};
+            }
         })
         this.setState({
             posts: newPosts
         })
         let newIds = newPosts
-            .filter(post => post.disliked)
+            .filter(post => post[key])
             .map(post => post.id);
-        localStorage.dislikedIds = JSON.stringify(newIds);
-    }
-
-    
-    onLikeButton = (id:number) => {
-        const newPosts = this.state.posts.map((post)=>{
-            return id === post.id ? {...post, liked: !post.liked} : {...post};
-        })
-
-        this.setState({
-            posts: newPosts
-        })
-
-        const newIds = newPosts
-            .filter(post => post.liked)
-            .map(post => post.id);
-        localStorage.likedIds = JSON.stringify(newIds);
-    }
-
-    onClickButton = (id:number, a: string) => {
-        
-        let newPosts = this.state.posts.map((post) => {
-            return id === post.id ? {...post, a: !post.liked} : {...post};
-            
-        })
-        this.setState({
-            posts: newPosts
-        })
-        let newIds = newPosts
-            .filter(post => post.disliked)
-            .map(post => post.id);
-        localStorage.dislikedIds = JSON.stringify(newIds);
+        localStorage.setItem(key + 'Ids', JSON.stringify(newIds))
+        // localStorage.dislikedIds = JSON.stringify(newIds);
     }
 
 
@@ -119,9 +92,10 @@ class App extends React.Component<MyProps, MyState> {
                                     <Post
                                         key={post.id}
                                         post={post}
-                                        onDislikeButton={this.onDislikeButton}
-                                        onLikeButton = {this.onLikeButton}
-                                        />
+                                        // onDislikeButton={this.onDislikeButton}
+                                        // onLikeButton={this.onLikeButton}
+                                        onClickButton={this.onClickButton}
+                                    />
                                 )
                             )}
                     </ul>

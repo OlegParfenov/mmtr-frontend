@@ -3,15 +3,17 @@ import Media from 'react-bootstrap/Media';
 import ButtonPanel from "./ButtonPanel";
 import '../scss/Post.scss';
 import {IPostLikes} from '../interfaces/post.interface';
+import {Like} from "../types/Like";
 
 interface IPostProps {
     post: IPostLikes,
-    onDislikeButton: any,
-    onLikeButton: any
+    onClickButton: (id: number, key: Like) => void
+    // onDislikeButton: any,
+    // onLikeButton: any
 }
 
 const Post = (props: IPostProps): JSX.Element => {
-    let {post, onDislikeButton, onLikeButton} = props;
+    let {post, onClickButton} = props;
 
     return (
         <div>
@@ -20,8 +22,10 @@ const Post = (props: IPostProps): JSX.Element => {
                     <h5>{post.title}</h5>
                     <p>{post.body}</p>
                     <ButtonPanel post={post}
-                                 onDislikeButton={onDislikeButton}
-                                 onLikeButton={onLikeButton}/>
+                                 // onDislikeButton={onDislikeButton}
+                                 // onLikeButton={onLikeButton}
+                                 onClickButton={onClickButton}
+                    />
                 </Media.Body>
             </Media>
         </div>
