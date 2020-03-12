@@ -14,13 +14,18 @@ class App extends React.Component<MyProps, MyState> {
             posts: [],
         };
     }
+    
+    findPostId(postId: number, key:string) {
+        const ids = getLSIds(key);
+        return !!ids.find(id => id === postId);
+    }
 
+    
     onDislikeButton = (id: number) => {
         let newPosts = this.state.posts.map((post) => {
             return id === post.id ? {...post, disliked: true} : {...post};
             
         })
-        console.log(newPosts)
         this.setState({
             posts: newPosts
         })
@@ -30,15 +35,9 @@ class App extends React.Component<MyProps, MyState> {
         localStorage.dislikedIds = JSON.stringify(newIds);
     }
 
-
-    dislikeFind(postId: number) {
-        const dislikedIds = getLSIds('dislikedIds');
-        return !!dislikedIds.find(id => id === postId);
-    }
-
     
     onLikeButton = (id:number) => {
-        let newPosts = this.state.posts.map((post)=>{
+        const newPosts = this.state.posts.map((post)=>{
             return id === post.id ? {...post, liked: !post.liked} : {...post};
         })
 
@@ -46,16 +45,27 @@ class App extends React.Component<MyProps, MyState> {
             posts: newPosts
         })
 
-        let newIds = newPosts
+        const newIds = newPosts
             .filter(post => post.liked)
             .map(post => post.id);
         localStorage.likedIds = JSON.stringify(newIds);
     }
 
-    likeFind(postId: number) {
-        const likedIds = getLSIds('likedIds');
-        return !!likedIds.find(id => id === postId);
+    onClickButton = (id:number, a: string) => {
+        
+        let newPosts = this.state.posts.map((post) => {
+            return id === post.id ? {...post, a: !post.liked} : {...post};
+            
+        })
+        this.setState({
+            posts: newPosts
+        })
+        let newIds = newPosts
+            .filter(post => post.disliked)
+            .map(post => post.id);
+        localStorage.dislikedIds = JSON.stringify(newIds);
     }
+
 
     // deleteFavorites(id: number): void {
     //     if (localStorage.getItem('favoritesIds') !== null) {
@@ -77,8 +87,8 @@ class App extends React.Component<MyProps, MyState> {
                         posts: result.map(post => {
                             return ({
                                 ...post,
-                                disliked: this.dislikeFind(post.id),
-                                liked: this.likeFind(post.id)
+                                disliked: this.findPostId(post.id, 'dislikedIds'),
+                                liked: this.findPostId(post.id, 'likedIds')
                             })
                         })
                     });
