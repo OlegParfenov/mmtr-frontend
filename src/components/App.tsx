@@ -1,9 +1,11 @@
 import React from 'react';
 import Head from './Head';
 import Post from './Post';
-import {MyState} from '../interfaces/state.interface';
-import {MyProps} from '../interfaces/props.interface';
-import {Like} from "../types/Like";
+import { MyState } from '../interfaces/state.interface';
+import { MyProps } from '../interfaces/props.interface';
+import { Like } from "../types/Like";
+import Spinner from 'react-bootstrap/Spinner';
+import Container from 'react-bootstrap/Container';
 
 class App extends React.Component<MyProps, MyState> {
     constructor(props) {
@@ -20,13 +22,13 @@ class App extends React.Component<MyProps, MyState> {
         return !!ids.find(id => id === postId);
     }
 
-    onClickButton = (id: number, key: Like): void =>  {
+    onClickButton = (id: number, key: Like): void => {
         const newPosts = this.state.posts.map((post) => {
             if (key === 'disliked') {
-                return id === post.id ? {...post, disliked: true} : {...post};
+                return id === post.id ? { ...post, disliked: true } : { ...post };
             }
             if (key === 'liked') {
-                return id === post.id ? {...post, liked: !post.liked} : {...post};
+                return id === post.id ? { ...post, liked: !post.liked } : { ...post };
             }
         })
         this.setState({
@@ -36,19 +38,7 @@ class App extends React.Component<MyProps, MyState> {
             .filter(post => post[key])
             .map(post => post.id);
         localStorage.setItem(key + 'Ids', JSON.stringify(newIds))
-        // localStorage.dislikedIds = JSON.stringify(newIds);
     }
-
-
-    // deleteFavorites(id: number): void {
-    //     if (localStorage.getItem('favoritesIds') !== null) {
-    //         let favoritesIds = JSON.parse(localStorage.favoritesIds);
-    //         let index = favoritesIds.findIndex(item => item === id);
-    //         favoritesIds.splice(index, 1)
-    //         //Здесь должна быть проверка
-    //         localStorage.favoritesIds = JSON.stringify(favoritesIds);
-    //     }
-    // }
 
     componentDidMount() {
         fetch('https://jsonplaceholder.typicode.com/posts')
@@ -76,27 +66,37 @@ class App extends React.Component<MyProps, MyState> {
     }
 
     render() {
-        const {error, isLoaded, posts} = this.state;
+        const { error, isLoaded, posts } = this.state;
         if (error) {
             return <div>Ошибка: {error.message}</div>;
-        } else if (!isLoaded) {
-            return <div>Загрузка...</div>;
-        } else {
+        }
+        if (!isLoaded) {
             return (
                 <div>
-                    <Head/>
+                    <Head />
+                    <Container  className = 'container'>
+                        <Spinner animation="border" variant="primary" />
+                    </Container>
+                </div>
+            )
+        }
+        else {
+            return (
+
+                <div>
+                    <Head />
                     <ul>
                         {posts
                             .filter(post => !post.disliked)
                             .map(post => (
-                                    <Post
-                                        key={post.id}
-                                        post={post}
-                                        // onDislikeButton={this.onDislikeButton}
-                                        // onLikeButton={this.onLikeButton}
-                                        onClickButton={this.onClickButton}
-                                    />
-                                )
+                                <Post
+                                    key={post.id}
+                                    post={post}
+                                    // onDislikeButton={this.onDislikeButton}
+                                    // onLikeButton={this.onLikeButton}
+                                    onClickButton={this.onClickButton}
+                                />
+                            )
                             )}
                     </ul>
                 </div>
